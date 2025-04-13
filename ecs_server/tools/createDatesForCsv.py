@@ -1,7 +1,7 @@
 import csv
 import random
 
-with open("albanian-words-wo-accents.txt", "r") as f:
+with open("/albanian-diceware-words-list/albanian-words-wo-accents.txt", "r") as f:
     nouns = [line.strip().lower() for line in f if len(line.strip()) == 5 and "'" not in line.strip()]
 
 with open("words.csv", 'r', newline = '') as wordslist:

@@ -7,12 +7,9 @@ import os
 # CORS configuration
 from flask_cors import CORS
 
-words = "fjale.csv"
+words = "word_list_6.csv"
 words_path = f"/app/data/{words}"
 words_file = words_path if os.path.exists(words_path) else words
-
-#   today = date.today()
-#   today_str = f"{today.month}/{today.day}/{today.year}"
 
 def get_days_word(day_str):
     with open(words_file, 'r', newline='') as file:
@@ -70,6 +67,28 @@ def handle_post():
 @app.route('/', methods=['GET'])
 def handle_get():
     data = request.get_json()
+
+    today = date.today()
+    today_str = f"{today.year}/{today.month}/{today.day}"
+
+    #find out how the letters the user gave us matches with todays word
+    numbers = "".join(str(num) for num in check_letters(data, today_str))
+    
+    #return todays word to user if they got everything correct
+    #hides what todays word is from the frontend until the end
+    if numbers == "222222":
+        response_data = {
+            "data": numbers,
+            "word": get_days_word(today_str)
+        }
+    
+    #or just what numbers they got
+    else:
+        response_data = {
+            "data": numbers
+        }
+    
+    return jsonify(response_data), 200
 
 # Add a health check endpoint
 @app.route('/health', methods=['GET'])
