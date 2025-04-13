@@ -22,7 +22,7 @@ def check_letters(data, day_str):
     vals = []
     #word myst be the exact length that is accepted
     if len(data) != 6:
-        return None
+        return []
     #0 = gray squares, 1 = yellow squares, 2 = green squares
     for x in range(len(data)):
         if data[x] == get_days_word(day_str)[x]:
@@ -64,33 +64,30 @@ def handle_options():
 def handle_post():
     if request.method == 'OPTIONS':
         return handle_options()
-    
-    data = request.get_json()
-
-@app.route('/', methods=['GET'])
-def handle_get():
     data = request.get_json()
 
     today = date.today()
     today_str = f"{today.year}/{today.month}/{today.day}"
 
     #find out how the letters the user gave us matches with todays word
-    numbers = "".join(str(num) for num in check_letters(data, today_str))
+    numbers = "".join(str(num) for num in check_letters(data["data"], today_str))
     
     #return todays word to user if they got everything correct
     #hides what todays word is from the frontend until the end
-    if numbers == "222222":
-        response_data = {
-            "data": numbers,
-            "word": get_days_word(today_str)
-        }
+    response_data = {
+        "data": numbers if numbers != [] else 0
+    }
     
-    #or just what numbers they got
-    else:
-        response_data = {
-            "data": numbers
-        }
-    
+    return jsonify(response_data), 200
+
+@app.route('/', methods=['GET'])
+def handle_get():
+    today = date.today()
+    today_str = f"{today.year}/{today.month}/{today.day}"
+    response_data = {
+        "data": get_days_word(today_str)
+    }
+
     return jsonify(response_data), 200
 
 # Add a health check endpoint

@@ -24,6 +24,10 @@ class fjalle_backend_test(unittest.TestCase):
     
     def test_calculation(self):
         self.assertEqual(fjalle_backend.check_letters("fjalle", "2025/4/13"), [2, 2, 2, 2, 2, 2])
+        self.assertEqual(fjalle_backend.check_letters("fjale", "2025/4/13"), [])
         self.assertEqual(fjalle_backend.check_letters("mbathi", "2025/4/13"), [0, 0, 2, 0, 0, 0])
         self.assertEqual(fjalle_backend.check_letters("kancer", "2025/4/13"), [0, 1, 0, 0, 1, 0])
+
+#post test template
+# curl -X POST http://127.0.0.1:5000 -H "Content-Type: application/json" -d '{"data":"<data>"}'
         
