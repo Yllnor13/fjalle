@@ -6,25 +6,28 @@ import os
 
 # CORS configuration
 from flask_cors import CORS
-
+base_dir = os.path.dirname(__file__)
 words = "word_list_6.csv"
-words_path = f"/app/data/{words}"
-words_file = words_path if os.path.exists(words_path) else words
+words_path = os.path.join("/app/data/", words)
+words_file = words_path if os.path.exists(words_path) else os.path.join(base_dir, words)
 
 def get_days_word(day_str):
     with open(words_file, 'r', newline='') as file:
         datereader = reader(file)
         for line in datereader:
             if line[0] == day_str:
-                return line[1]
+                return line[1].strip()
 
 def check_letters(data, day_str):
     vals = []
+    #word myst be the exact length that is accepted
+    if len(data) != 6:
+        return None
     #0 = gray squares, 1 = yellow squares, 2 = green squares
     for x in range(len(data)):
         if data[x] == get_days_word(day_str)[x]:
             vals.append(2)
-        elif x in get_days_word(day_str):
+        elif data[x] in get_days_word(day_str):
             vals.append(1)
         else:
             vals.append(0)
