@@ -1,6 +1,7 @@
 ecs_server/backend
 ecs_server/tools/albanian-diceware-words-list
 **/__pycache__/
+.vscode/
 
 
 web_client/node_modules
