@@ -1,0 +1,19 @@
+- MainLayout
+- - usestate,useeffect,useref
+- - modal
+- - - lucide react(x)
+- - gamecontent
+- - - react(usestate)
+- - - textfield
+- - - - react
+- - - sendrequestbutton
+- - - - react(usestate)
+- - - - apiclient(finalsubmit)
+- - - - scorescreen
+- - - wordsdisplay
+- - - - react
+- - sidemenu
+- - - react
+- - animationplaceholder
+- - - react
+- - apiclient(getdailywords)

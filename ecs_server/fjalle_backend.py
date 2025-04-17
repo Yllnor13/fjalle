@@ -65,13 +65,15 @@ def handle_post():
     if request.method == 'OPTIONS':
         return handle_options()
     data = request.get_json()
+    print(data)
 
     today = date.today()
     today_str = f"{today.year}/{today.month}/{today.day}"
 
     #find out how the letters the user gave us matches with todays word
-    numbers = "".join(str(num) for num in check_letters(data["data"], today_str))
-    
+    numbers = "".join(str(num) for num in check_letters(data["data"].lower(), data["date"]))
+    print(numbers)
+    print(get_days_word(data["date"]))
     #return todays word to user if they got everything correct
     #hides what todays word is from the frontend until the end
     response_data = {
