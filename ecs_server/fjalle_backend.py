@@ -11,33 +11,102 @@ words = "word_list_6.csv"
 words_path = os.path.join("/app/data/", words)
 words_file = words_path if os.path.exists(words_path) else os.path.join(base_dir, words)
 
-def get_days_word(day_str):
+
+def encode_data(data: str, exist: bool) -> int:
+    """
+    Encodes a 6-digit base-3 string and a boolean flag into an integer.
+    Assumes data is exactly 6 digits ('0', '1', or '2').
+    """
+    val = 0
+    # Ensure the input data string is exactly 6 characters long
+    if len(data) != 6:
+        raise ValueError("Input data string must be exactly 6 characters long.")
+
+    for i in range(6):
+        try:
+            digit = int(data[i])
+            if not (0 <= digit <= 2):
+                raise ValueError(f"Invalid digit '{data[i]}' at index {i}. Only '0', '1', '2' are allowed.")
+            val = val * 3 + digit # base-3 encode
+        except ValueError:
+            raise ValueError(f"Invalid character '{data[i]}' at index {i}. Only digits '0', '1', '2' are allowed.")
+
+    # Add the "exist" bit: Shift left by 1 and OR with 1 if exist is True, else 0
+    val = (val << 1) | (1 if exist else 0)
+    return val
+
+def decode_data(val: int) -> dict:
+    """
+    Decodes an integer back into a 6-digit base-3 string and a boolean flag.
+
+    Args:
+        val: The encoded integer value.
+
+    Returns:
+        A dictionary containing:
+            'data': The decoded 6-digit base-3 string.
+            'exist': The decoded boolean flag.
+    """
+    # Extract the last bit for the 'exist' flag
+    exist = bool(val & 1)
+
+    # Right-shift to remove the 'exist' bit
+    val = val >> 1
+
+    data = ''
+    for _ in range(6): # We need to loop 6 times
+        # Get the last base-3 digit (remainder of division by 3)
+        digit = val % 3
+        # Prepend the digit (as a string) to the data string
+        data = str(digit) + data
+        # Integer division by 3 to remove the last base-3 digit
+        val = val // 3 # Use floor division //
+
+    return {"data": data, "exist": exist}
+
+def load_word_data():
     with open(words_file, 'r', newline='') as file:
         datereader = reader(file)
-        for line in datereader:
-            if line[0] == day_str:
-                return line[1].strip()
+        return [tuple(line) for line in datereader]
+
+word_data = load_word_data()
+
+def get_days_word(day_str):
+    for line in word_data:
+        if line[0] == day_str:
+            return line[1].strip()
+    return None  # Optional fallback
+
+def is_word_in_list(word):
+    return any(line[1] == word for line in word_data)
 
 def check_letters(data, day_str):
     vals = []
-    #word myst be the exact length that is accepted
     if len(data) != 6:
         return []
-    #0 = gray squares, 1 = yellow squares, 2 = green squares
-    for x in range(len(data)):
-        if data[x] == get_days_word(day_str)[x]:
+
+    word_of_day = get_days_word(day_str)
+    if not word_of_day:
+        return []  # Optional: handle missing day
+
+    for i in range(len(data)):
+        if data[i] == word_of_day[i]:
             vals.append(2)
-        elif data[x] in get_days_word(day_str):
+        elif data[i] in word_of_day:
             vals.append(1)
         else:
             vals.append(0)
-    return vals
+    return "".join(map(str, vals))
 
 app = Flask(__name__)
 
 app.config['TOGGLE_TITLE'] = True
 
-allowed_origins = ["http://localhost:3000"]
+allowed_origins = [
+    "http://localhost:3000",       # Windows frontend
+    "http://192.168.10.161:3000",  # LAN frontend (mobile, etc.)
+    "http://172.24.229.75:5000",   # WSL backend (if necessary)
+]
 
 # Get port from environment variable or use 8080 as default
 port = int(os.environ.get('PORT', 8080))
@@ -67,30 +136,40 @@ def handle_post():
     data = request.get_json()
     print(data)
 
-    today = date.today()
-    today_str = f"{today.year}/{today.month}/{today.day}"
+    submitted_word = data["data"].lower()
+    day_str = data["date"]
 
-    #find out how the letters the user gave us matches with todays word
-    numbers = "".join(str(num) for num in check_letters(data["data"].lower(), data["date"]))
-    print(numbers)
-    print(get_days_word(data["date"]))
-    #return todays word to user if they got everything correct
-    #hides what todays word is from the frontend until the end
+    # Find out how the letters the user gave us matches with today's word
+    numbers = check_letters(submitted_word, day_str)
+    print("numbers " + numbers)
+    daily_word = get_days_word(day_str)
+    print("Daily word: " + daily_word)
+
+    is_valid_word = is_word_in_list(submitted_word)
+
+    encoded_numbers = encode_data(numbers, is_valid_word)
+
     response_data = {
-        "data": numbers if numbers != [] else 0
+        "data": encoded_numbers
     }
-    
+
     return jsonify(response_data), 200
 
 @app.route('/', methods=['GET'])
 def handle_get():
     today = date.today()
     today_str = f"{today.year}/{today.month}/{today.day}"
-    response_data = {
-        "data": get_days_word(today_str)
-    }
+    daily_word = get_days_word(today_str)
 
-    return jsonify(response_data), 200
+    if daily_word:
+        is_valid = True # Assuming the daily word is always in the list
+        encoded_word = encode_data("222222", is_valid) # Encode as all correct for revealing
+        response_data = {
+            "data": encoded_word
+        }
+        return jsonify(response_data), 200
+    else:
+        return jsonify({"error": "Word for today not found"}), 404
 
 # Add a health check endpoint
 @app.route('/health', methods=['GET'])

@@ -1,5 +1,5 @@
-const API_URL = 'http://127.0.0.1:5000'
-
+//const API_URL = 'http://127.0.0.1:5000'
+const API_URL = 'http://192.168.10.161:5000/'
 interface APIRequestConfig{
     method: 'GET' | 'POST';
     data?: string;
@@ -15,9 +15,11 @@ async function apiRequest({ method = 'POST', data, date } : APIRequestConfig){
         mode : 'cors',
         credentials : 'omit',
     }
+
     if (data || date) {
         fetchOptions.body = JSON.stringify({ data, date });
     }
+
     console.log(fetchOptions)
     try{
         const response = await fetch(`${API_URL}`, fetchOptions);

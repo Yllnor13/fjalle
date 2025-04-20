@@ -29,7 +29,7 @@ const Key: React.FC<KeyProps> = ({ value, onClick, state }) => {
 
   return (
     <button
-      className={`rounded font-bold p-2 min-w-[40px] ${stateClasses[state]}`}
+      className={`w-full h-18 max-h-[100px] min-w-[20px] max-w-[100px] rounded font-bold ${stateClasses[state]}`}
       onClick={() => onClick(value)}
     >
       {value}
@@ -41,18 +41,21 @@ const Key: React.FC<KeyProps> = ({ value, onClick, state }) => {
 const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, keyStates }) => {
   // Keyboard layout rows
   const keyboardRows = [
-    ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
-    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
-    ['>', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<']
+    ['Q', 'W', 'E', 'R', 'T', 'Z', 'U', 'I', 'O', 'P', 'Ç'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ë'],
+    ['>', 'Y', 'X', 'C', 'V', 'B', 'N', 'M', '<']
   ];
 
   // Handle physical keyboard presses
   React.useEffect(() => {
+    console.log("keyboard loaded")
     const handleKeyDown = (event: KeyboardEvent) => {
       const key = event.key.toUpperCase();
+      console.log("Pressed: " + key);
       
       // Handle letters
-      if (/^[A-Z]$/.test(key)) {
+      if (/^[A-ZÇË]$/.test(key)) {
+        console.log("Pressed: " + key);
         onKeyPress(key);
       } 
       // Handle Enter and Backspace
@@ -60,6 +63,8 @@ const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, keyStates }) => {
         onKeyPress('ENTER');
       } else if (key === 'BACKSPACE' || key === 'DELETE') {
         onKeyPress('BACK');
+      } else {
+        onKeyPress(key);
       }
     };
 
@@ -72,7 +77,7 @@ const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, keyStates }) => {
   }, [onKeyPress]);
 
   return (
-    <div className="w-full max-w-md mx-auto p-2">
+    <div className="w-full max-w max-h">
       {keyboardRows.map((row, rowIndex) => (
         <div key={rowIndex} className="flex justify-center gap-1 my-1">
           {row.map((key) => (
