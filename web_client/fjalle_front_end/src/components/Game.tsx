@@ -340,14 +340,16 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
       </div>
       
       {/* Error message */}
-      <div className="h-10 flex items-center justify-center">
+      <div className="relative">
         {error && (
-          <div className={`text-center font-bold py-2 px-4 rounded-md ${
-            error === 'Results copied to clipboard!' 
-              ? 'text-green-700 bg-green-50' 
-              : 'text-red-500 bg-red-50'
-          }`}>
-            {error}
+          <div className="absolute top-[-60px] left-0 right-0 mx-auto w-fit z-10 animate-fadeIn">
+            <div className={`text-center font-bold py-2 px-4 rounded-md shadow-lg border ${
+              error === 'Results copied to clipboard!' 
+                ? 'text-green-700 bg-green-50 border-green-300' 
+                : 'text-red-700 bg-red-50 border-red-300'
+            }`}>
+              {error}
+            </div>
           </div>
         )}
       </div>
