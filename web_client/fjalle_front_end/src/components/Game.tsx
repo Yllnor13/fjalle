@@ -43,6 +43,7 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
 
   // Load saved game state on component mount
   useEffect(() => {
+    //local_storage.clear_attempts();
     console.log("game loaded");
     // Get the saved game state regardless of whether the game is finished or not
     const savedGameDate = Local_storage.get_game_date();
@@ -250,6 +251,7 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
   const copyToClipboard = () => {
     try{
       navigator.clipboard.writeText(shareMessage)
+      //"U kopijue me suksese"
     }
     catch(err){
       console.error(err)
@@ -268,12 +270,12 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
 
   // Get the appropriate CSS class for a letter cell based on result
   const getCellClass = (rowIndex: number, colIndex: number): string => {
-    const baseClasses = 'w-14 h-14 border flex items-center justify-center font-bold text-xl uppercase';
+    const baseClasses = 'rounded w-16 h-16 border flex items-center justify-center font-bold text-xl uppercase';
     
     // Current row being typed
     if (rowIndex === attempts.length) {
       if (colIndex < currentAttempt.length) {
-        return `${baseClasses} text-black border-[var(--cell-border-typing)] bg-[var(--cell-bg-typing)] text-[var(--cell-text-typing)]`;
+        return `${baseClasses} text-[var(--text0)] border-[var(--cell-border-typing)] bg-[var(--cell-bg-typing)] text-[var(--cell-text-typing)]`;
       }
       return `${baseClasses} border-gray-300`;
     }
@@ -282,16 +284,16 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
     if (rowIndex < attempts.length && results[rowIndex]) {
       const result = results[rowIndex][colIndex];
       if (result === 2) {
-        return `${baseClasses} border-green-500 bg-green-500 text-white`;
+        return `${baseClasses} border-[var(--correct)] bg-[var(--correct)] text-[var(--text-light)]`;
       } else if (result === 1) {
-        return `${baseClasses} border-yellow-500 bg-yellow-500 text-white`;
+        return `${baseClasses} border-[var(--present)] bg-[var(--present)] text-[var(--text-light)]`;
       } else {
-        return `${baseClasses} border-gray-700 bg-gray-700 text-white`;
+        return `${baseClasses} border-[var(--absent)] bg-[var(--absent)] text-[var(--text-light)]`;
       }
     }
     
     // Future rows (not yet active)
-    return `${baseClasses} border-gray-200 bg-gray-100 text-gray-400`;
+    return `${baseClasses} border-[var(--border)] bg-[var(--background)] text-[var(--text1)]`;
   };
 
   // Get the letter to display in a cell
@@ -324,9 +326,9 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
   return (
     <div className="flex flex-col items-center gap-6 px-2 md:px-4">
       {/* Word grid */}
-      <div className="grid grid-rows-6 gap-1">
+      <div className="grid grid-rows-6 gap-1 rounded">
         {Array.from({ length: MAX_ATTEMPTS }).map((_, rowIndex) => (
-          <div key={`row-${rowIndex}`} className="grid grid-cols-6 gap-1">
+          <div key={`row-${rowIndex}`} className="grid grid-cols-6 gap-1 rounded">
             {Array.from({ length: WORD_LENGTH }).map((_, colIndex) => (
               <div
                 key={`cell-${rowIndex}-${colIndex}`}
@@ -358,23 +360,23 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
       {isGameOver && !showStatsModal && (
         <div className="text-lg font-bold">
           {results.some(result => result.every(r => r === 2))
-            ? "Congratulations! You guessed the word!"
-            : "Game over. Better luck next time!"}
+            ? "Urime! Pergjegjja e sakt!"
+            : "Loja ka mbaruar!"}
         </div>
       )}
       
       {/* Stats Modal */}
       {showStatsModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-80 md:w-96 max-w-full max-h-[90vh] overflow-auto">
-            <h2 className="text-2xl font-bold mb-4 text-center">Game Statistics</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-gray bg-opacity-50 z-50">
+          <div className="bg-[var(--background)] p-6 rounded-lg shadow-lg w-80 md:w-96 max-w-full max-h-[90vh] overflow-auto">
+            <h2 className="text-2xl font-bold mb-4 text-center">Statistikat e lojes</h2>
             
             {/* Game result */}
             <div className="mb-4 text-center">
               <p className="text-xl font-bold">
                 {results.some(result => result.every(r => r === 2))
-                  ? "You won!"
-                  : "Better luck next time!"}
+                  ? "Ju keni fituar!"
+                  : "Suksese ne vazhdim!"}
               </p>
 
               {isGameOver && todayWord && (
@@ -388,25 +390,25 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="text-center">
                 <div className="text-3xl font-bold">{Local_storage.get_wins() + Local_storage.get_losses()}</div>
-                <div className="text-sm">Played</div>
+                <div className="text-sm">Lojë</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold">{calculateWinPercentage()}%</div>
-                <div className="text-sm">Win %</div>
+                <div className="text-sm">Fituar %</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold">{Local_storage.get_cur_streak()}</div>
-                <div className="text-sm">Current Streak</div>
+                <div className="text-sm">Brezi aktual</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold">{Local_storage.get_max_streak()}</div>
-                <div className="text-sm">Max Streak</div>
+                <div className="text-sm">Brezi maksimum</div>
               </div>
             </div>
             
             {/* Guess Distribution */}
             <div className="mb-6">
-              <h3 className="text-lg font-bold mb-2 text-center">Guess Distribution</h3>
+              <h3 className="text-lg font-bold mb-2 text-center">Shpërndarja e përgjigjeve</h3>
               <div className="space-y-1">
                 {Array.from({ length: MAX_ATTEMPTS }).map((_, i) => {
                   const count = Local_storage.get_win_rounds(i + 1);
@@ -416,16 +418,16 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
                   return (
                     <div key={`dist-${i}`} className="flex items-center">
                       <div className="w-4 text-right mr-2">{i + 1}</div>
-                      <div className="flex-1 h-6 bg-gray-200 rounded">
+                      <div className="flex-1 h-6 bg-[var(--background)] rounded">
                         <div 
                           className={`h-full rounded flex items-center justify-end pr-2 ${
                             attempts.length === i + 1 && results[i]?.every(r => r === 2)
                               ? 'bg-green-500' 
-                              : 'bg-gray-500'
+                              : 'bg-[var(--foreground)]'
                           }`}
                           style={{ width: `${Math.max(percentage, 8)}%` }}
                         >
-                          <span className="text-white text-xs font-bold">{count}</span>
+                          <span className="text-[var(--text1)] text-xs font-bold">{count}</span>
                         </div>
                       </div>
                     </div>
@@ -436,15 +438,15 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
             
             {/* Share section */}
             <div className="mb-4">
-              <h3 className="text-lg font-bold mb-2 text-center">Share</h3>
-              <pre className="bg-gray-100 p-2 rounded mb-2 text-sm overflow-x-auto">
+              <h3 className="text-lg font-bold mb-2 text-center">Shpërndaje</h3>
+              <pre className="bg-[var(--background)] p-2 rounded mb-2 text-sm overflow-x-auto">
                 {shareMessage}
               </pre>
               <button 
                 onClick={copyToClipboard}
                 className="w-full py-2 bg-green-500 text-white font-bold rounded hover:bg-green-600 transition"
               >
-                Copy to Clipboard
+                Kopijo resultatet
               </button>
             </div>
             
@@ -453,7 +455,7 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
               onClick={() => setShowStatsModal(false)}
               className="w-full py-2 bg-gray-200 text-gray-800 font-bold rounded hover:bg-gray-300 transition"
             >
-              Close
+              Mbylle
             </button>
           </div>
         </div>

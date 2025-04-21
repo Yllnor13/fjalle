@@ -21,15 +21,15 @@ interface KeyProps {
 const Key: React.FC<KeyProps> = ({ value, onClick, state }) => {
   // Map state to appropriate color classes
   const stateClasses = {
-    correct: 'bg-green-500 text-white',
-    present: 'bg-yellow-500 text-white',
-    absent: 'bg-gray-700 text-white',
-    unused: 'bg-gray-200 text-black'
+    correct: 'tile-correct',
+    present: 'tile-present',
+    absent: 'tile-absent',
+    unused: 'tile-unused'
   };
 
   return (
     <button
-      className={`w-full h-18 max-h-[100px] min-w-[20px] max-w-[100px] rounded font-bold ${stateClasses[state]}`}
+      className={`w-12 h-12 max-h-[100px] min-w-[20px] max-w-[200px] rounded font-bold ${stateClasses[state]}`}
       onClick={() => onClick(value)}
     >
       {value}

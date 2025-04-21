@@ -1,8 +1,35 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --foreground-light: #171717;
+  --background-light: #ffffff;
+
+  --foreground-dark: #404040;
+  --background-dark: #0a0a0a;
+
+  --boder-light: #aaaaaa;
+  --border-dark: #444444;
+
+  --correct: #22c55e;
+  --present: #eab308;
+
+  --text-light: #ffffff;
+  --text-dark: #000000;
+
+  --absent-light: #808080;
+  --unused-light: #cccccc;
+
+  --absent-dark: #333333;
+  --unused-dark: #707070;
+
+  /* Set the default (light mode) */
+  --foreground: var(--foreground-light);
+  --background: var(--background-light);
+  --absent: var(--absent-light);
+  --unused: var(--unused-light);
+  --text1: var(--text-light);
+  --text0: var(--text-dark);
+  --border: var(--border-light)
 }
 
 @theme inline {
@@ -12,10 +39,38 @@
   --font-mono: var(--font-geist-mono);
 }
 
+.tile-correct {
+  background-color: var(--correct);
+  color: var(--text-light);
+}
+
+.tile-present {
+  background-color: var(--present);
+  color: var(--text-light);
+}
+
+.tile-absent {
+  background-color: var(--absent);
+  color: var(--text-light);
+}
+
+.tile-unused {
+  background-color: var(--unused);
+  color: var(--text0);
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: var(--foreground-dark);
+    --background: var(--background-dark);
+
+    --absent: var(--absent-dark);
+    --unused: var(--unused-dark);
+
+    --text1: var(--text-dark);
+    --text0: var(--text-light);
+
+    --border: var(--border-dark)
   }
 }
 

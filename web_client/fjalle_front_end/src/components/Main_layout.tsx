@@ -70,8 +70,8 @@ const MainLayout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen max-h-screen bg-gray-100 py-8">
-        <h1 className="text-3xl font-bold text-center mb-6 text-black">FJALLE</h1>
+    <div className="min-h-screen max-h-screen bg-[var(--background)] py-8">
+        <h1 className="text-3xl font-bold text-center mb-6 text-[var(--text0)]">FJALLE</h1>
         
         {/* Game component */}
         <Game 
