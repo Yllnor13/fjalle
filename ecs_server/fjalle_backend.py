@@ -107,7 +107,7 @@ allowed_origins = [
     "http://192.168.10.161:3000",  # LAN frontend (mobile, etc.)
     "http://172.24.229.75:5000",   # WSL backend (if necessary)
     "https://fjalle.onrender.com",
-    "https://brave-numbers-mate.loca.lt/",
+    "https://brave-numbers-mate.loca.lt",
 ]
 
 # Get port from environment variable or use 8080 as default
