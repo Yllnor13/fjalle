@@ -2,44 +2,25 @@
 import React, { useState, useEffect } from 'react';
 import Keyboard from './keyboard';
 import Local_storage from './Local_storage';
-import { send_Word, get_Word } from '@/lib/api_client';
-import local_storage from './Local_storage';
+import {get_Word, send_Word} from '@/lib/api_client';
 
 // Define result states for each letter
 type LetterResult = 0 | 1 | 2; // 0: not in word, 1: wrong position, 2: correct position
 type KeyState = 'correct' | 'present' | 'absent' | 'unused';
 
-interface GameProps {
-  submitWord: (word: string) => Promise<{ result: string, exists: boolean }>;
-  todayDate: string;
-  //isHardmode: boolean;
-  todayWord: string;
-}
-
-const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
+const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean) => void}> = ({ showStatsModal, setShowStatsModal })  => {
   const [currentAttempt, setCurrentAttempt] = useState<string>('');
   const [attempts, setAttempts] = useState<string[]>([]);
   const [results, setResults] = useState<LetterResult[][]>([]);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
   const [keyStates, setKeyStates] = useState<Record<string, KeyState>>({});
   const [error, setError] = useState<string | null>(null);
-  const [showStatsModal, setShowStatsModal] = useState<boolean>(false);
   const [shareMessage, setShareMessage] = useState<string>('');
+  const [today_date_ui, set_date] = useState<string>('');
+  const [today_word, set_word] = useState<string>('');
   
   const MAX_ATTEMPTS = 6;
   const WORD_LENGTH = 6;
-
-  // Get today's date in the required format
-  const get_todays_date = (): string => {
-    console.log("main loaded");
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth() + 1; // Month is 0-indexed, so add 1
-    const day = today.getDate();
-    const formattedDate = `${year}/${month}/${day}`;
-    console.log(formattedDate); // Output: 2025/4/17
-    return formattedDate;
-  };
 
   // Load saved game state on component mount
   useEffect(() => {
@@ -49,10 +30,17 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
     const savedGameDate = Local_storage.get_game_date();
     const savedAttempts = Local_storage.get_attempt() || {};
     const attemptCount = Object.keys(savedAttempts).length;
+    handle_get();
 
-    todayDate = get_todays_date();
+    const today_date = get_todays_date();
+    set_date(today_date);
+    console.log("todays date ", get_todays_date);
+    console.log("savedGameDate ", savedGameDate);
+    console.log("todayDate ", today_date);
+    console.log("savedAttempts ", savedAttempts);
+
     // Only restore the game if it's from today
-    if (savedGameDate === todayDate && attemptCount > 0) {
+    if (savedGameDate === today_date && attemptCount > 0) {
       // Convert saved object to arrays for rendering
       let attemptArray: string[] = [];
       const resultsArray: LetterResult[][] = [];
@@ -75,11 +63,9 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
       setKeyStates(newKeyStates);
       
       // Check if game is already over
-      const isFinished = Local_storage.played_today(todayDate);
       const lastResult = resultsArray[resultsArray.length - 1];
-      
+      console.log("last result ", lastResult)
       if (
-        isFinished || 
         (lastResult && lastResult.every(r => r === 2)) || 
         attemptArray.length >= MAX_ATTEMPTS
       ) {
@@ -89,17 +75,49 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
         // Show stats modal if the game was already over when loading
         setTimeout(() => setShowStatsModal(true), 1000);
       }
-    } else if (savedGameDate !== todayDate) {
+    } else if (savedGameDate !== today_date) {
       // If it's a new day, clear previous attempts
       Local_storage.clear_attempts();
     }
     
     // Save today's date to track the current game
-    Local_storage.save_game_date(todayDate);
-  }, [todayDate]);
+    Local_storage.save_game_date(today_date);
+  }, [today_date_ui]);
+
+  const handle_get = async () => {
+    try{
+      const resget = await get_Word.get_Data();
+      set_word(resget.data);
+    }
+    catch(err){
+      console.log("couldnt find word");
+    }
+  }
+
+  const decodeData = (val: number): { data: string, exist: boolean } => {
+    const exist = Boolean(val & 1); // flag to know if the word was in the list
+    val = val >> 1;
+    let data = '';
+    for (let i = 0; i < 6; i++) {
+      data = (val % 3).toString() + data;
+      val = Math.floor(val / 3);
+    }
+    return { data, exist };
+  };
+
+  // Get today's date in the required format
+  const get_todays_date = (): string => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1; // Month is 0-indexed, so add 1
+    const day = today.getDate();
+    const formattedDate = `${year}/${month}/${day}`;
+    console.log(formattedDate); // Output: 2025/4/17
+    return formattedDate;
+  };
 
   // Submit current attempt
-  const handleSubmit = async () => {
+  const handle_submit = async () => {
     // Validate input length
     if (currentAttempt.length !== WORD_LENGTH) {
       setError(`Word must be ${WORD_LENGTH} letters long`);
@@ -112,15 +130,19 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
     
     try {
       // Submit word to backend via parent component
-      const response = await submitWord(currentAttempt);
-      
+      const res = await send_Word.send_Data(currentAttempt, get_todays_date());
+      const responseValue = parseInt(res.data);
+      const response = decodeData(responseValue);
+      if (response.data.split('').every((d: string) => d === '2')) {
+        setIsGameOver(true);
+      }
       // Check if the word is not in the word list (server returns exists: false)
-      if (!response.exists) { //(!response.exists && !isHardmode)
+      if (!response.exist) { //(!response.exists && !isHardmode)
         setError(`"${currentAttempt}" is not in the word list`);
         return; // Don't process this as an attempt
       }
       
-      const resultArray = response.result.split('').map(Number) as LetterResult[];
+      const resultArray = response.data.split('').map(Number) as LetterResult[];
       
       // Update state with new attempt and result
       const newAttempts = [...attempts, currentAttempt];
@@ -131,7 +153,7 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
       setCurrentAttempt('');
       
       // Save attempt to local storage with its result
-      Local_storage.save_attempt(currentAttempt, response.result);
+      Local_storage.save_attempt(currentAttempt, response.data);
       
       // Update key states
       const newKeyStates = { ...keyStates };
@@ -186,7 +208,7 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
       setCurrentAttempt(prev => prev.slice(0, -1));
     } else if (key === 'ENTER' || key === '>') {
       // Submit current attempt
-      handleSubmit();
+      handle_submit();
     } else if (/^[A-ZÇË]$/.test(key)) {
       // Add letter if within word length
       if (currentAttempt.length < WORD_LENGTH) {
@@ -197,7 +219,7 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
 
   // Generate share text with emojis based on results
   const generateShareText = (attemptArray = attempts, resultsArray = results): string => {
-    let shareText = `Fjalle ${todayDate} ${attemptArray.length}/${MAX_ATTEMPTS}\n\n`;
+    let shareText = `Fjalle ${today_date_ui} ${attemptArray.length}/${MAX_ATTEMPTS}\n\n`;
     
     // Create emoji grid based on results
     resultsArray.forEach(row => {
@@ -219,15 +241,15 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
 
   // Handle game completion
   const handleGameOver = (won: boolean, finalAttempts = attempts, finalResults = results) => { 
-    if (Local_storage.get_record_bool(todayDate)) {
+    if (Local_storage.get_record_bool(today_date_ui)) {
       // Stats already recorded, just show the modal
       setShowStatsModal(true);
       return;
     }
     
     setIsGameOver(true);
-    Local_storage.finished_attempt(todayDate);
-    Local_storage.add_record_bool(todayDate);
+    Local_storage.finished_attempt(today_date_ui);
+    Local_storage.add_record_bool(today_date_ui);
 
     // Update statistics
     if (won) {
@@ -324,21 +346,42 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
   }, [error]);
 
   return (
-    <div className="flex flex-col items-center gap-6 px-2 md:px-4">
+    <div className="flex flex-col items-center gap-1 px-1">
       {/* Word grid */}
-      <div className="grid grid-rows-6 gap-1 rounded">
-        {Array.from({ length: MAX_ATTEMPTS }).map((_, rowIndex) => (
-          <div key={`row-${rowIndex}`} className="grid grid-cols-6 gap-1 rounded">
-            {Array.from({ length: WORD_LENGTH }).map((_, colIndex) => (
-              <div
-                key={`cell-${rowIndex}-${colIndex}`}
-                className={getCellClass(rowIndex, colIndex)}
-              >
-                {getCellContent(rowIndex, colIndex)}
-              </div>
-            ))}
-          </div>
-        ))}
+      {/* Responsive width container */}
+      <div className="w-full max-w-[380px] md:max-w-[250px]">
+        <div className="grid grid-rows-6 gap-1">
+          {Array.from({ length: MAX_ATTEMPTS }).map((_, rowIndex) => (
+            <div
+              key={`row-${rowIndex}`}
+              className="grid grid-cols-6 gap-1"
+            >
+              {Array.from({ length: WORD_LENGTH }).map((_, colIndex) => {
+                const delay = `${colIndex * 0.2}s`;
+
+                return (
+                  <div
+                    key={`cell-${rowIndex}-${colIndex}`}
+                    className={`
+                      min-w-0
+                      w-[14vw] sm:w-[12vw] md:w-10
+                      h-[15vw] sm:h-[15vw] md:h-13 
+                      text-[14px] sm:text-[12px] md:text-[20px]
+                      flex items-center justify-center
+                      border rounded
+                      overflow-hidden whitespace-nowrap
+                      transition-colors duration-500
+                      ${getCellClass(rowIndex, colIndex)}
+                    `}
+                    style={{ transitionDelay: delay }}
+                  >
+                    {getCellContent(rowIndex, colIndex)}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
       </div>
       
       {/* Error message */}
@@ -355,113 +398,111 @@ const Game: React.FC<GameProps> = ({ submitWord, todayDate, todayWord }) => {
           </div>
         )}
       </div>
-      
-      {/* Simple game over message (when modal is not shown) */}
-      {isGameOver && !showStatsModal && (
-        <div className="text-lg font-bold">
-          {results.some(result => result.every(r => r === 2))
-            ? "Urime! Pergjegjja e sakt!"
-            : "Loja ka mbaruar!"}
-        </div>
-      )}
-      
-      {/* Stats Modal */}
-      {showStatsModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray bg-opacity-50 z-50">
-          <div className="bg-[var(--background)] p-6 rounded-lg shadow-lg w-80 md:w-96 max-w-full max-h-[90vh] overflow-auto">
-            <h2 className="text-2xl font-bold mb-4 text-center">Statistikat e lojes</h2>
-            
-            {/* Game result */}
-            <div className="mb-4 text-center">
-              <p className="text-xl font-bold">
-                {results.some(result => result.every(r => r === 2))
-                  ? "Ju keni fituar!"
-                  : "Suksese ne vazhdim!"}
-              </p>
+    {/* Stats Modal */}
+    {showStatsModal && (
+      <div
+        className="text-[var(--text0)] fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+        style={{
+          animation: "0.3s ease-out forwards modalFadeIn"
+        }}
+      >
+        <style jsx>{`
+          @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        `}</style>
+        <div className="bg-[var(--background)] p-6 rounded-lg shadow-lg w-80 md:w-96 max-w-full max-h-[90vh] overflow-auto">
+          {/* Game result */}
+          <div className="mb-4 text-center">
+            <p className="text-xl font-bold">
+              {results.some(result => result.every(r => r === 2))
+                ? "Ju keni fituar!"
+                : "Suksese ne vazhdim!"}
+            </p>
 
-              {isGameOver && todayWord && (
-                <p className="mt-2">
-                  Today's word was: <span className="font-bold uppercase">{todayWord}</span>
-                </p>
-              )}
+            {isGameOver && today_word && (
+              <p className="mt-2">
+                Fjala e sotme ishte: <span className="font-bold uppercase">{today_word}</span>
+              </p>
+            )}
+          </div>
+          
+          {/* Statistics grid */}
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="text-center">
+              <div className="text-3xl font-bold">{Local_storage.get_wins() + Local_storage.get_losses()}</div>
+              <div className="text-sm">Lojë</div>
             </div>
-            
-            {/* Statistics grid */}
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="text-center">
-                <div className="text-3xl font-bold">{Local_storage.get_wins() + Local_storage.get_losses()}</div>
-                <div className="text-sm">Lojë</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold">{calculateWinPercentage()}%</div>
-                <div className="text-sm">Fituar %</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold">{Local_storage.get_cur_streak()}</div>
-                <div className="text-sm">Brezi aktual</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold">{Local_storage.get_max_streak()}</div>
-                <div className="text-sm">Brezi maksimum</div>
-              </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold">{calculateWinPercentage()}%</div>
+              <div className="text-sm">Fituar %</div>
             </div>
-            
-            {/* Guess Distribution */}
-            <div className="mb-6">
-              <h3 className="text-lg font-bold mb-2 text-center">Shpërndarja e përgjigjeve</h3>
-              <div className="space-y-1">
-                {Array.from({ length: MAX_ATTEMPTS }).map((_, i) => {
-                  const count = Local_storage.get_win_rounds(i + 1);
-                  const total = Local_storage.get_wins();
-                  const percentage = total > 0 ? (count / total) * 100 : 0;
-                  
-                  return (
-                    <div key={`dist-${i}`} className="flex items-center">
-                      <div className="w-4 text-right mr-2">{i + 1}</div>
-                      <div className="flex-1 h-6 bg-[var(--background)] rounded">
-                        <div 
-                          className={`h-full rounded flex items-center justify-end pr-2 ${
-                            attempts.length === i + 1 && results[i]?.every(r => r === 2)
-                              ? 'bg-green-500' 
-                              : 'bg-[var(--foreground)]'
-                          }`}
-                          style={{ width: `${Math.max(percentage, 8)}%` }}
-                        >
-                          <span className="text-[var(--text1)] text-xs font-bold">{count}</span>
-                        </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold">{Local_storage.get_cur_streak()}</div>
+              <div className="text-sm">Brezi aktual</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold">{Local_storage.get_max_streak()}</div>
+              <div className="text-sm">Brezi maksimum</div>
+            </div>
+          </div>
+          
+          {/* Guess Distribution */}
+          <div className="mb-6">
+            <h3 className="font-bold mb-2 text-center">Shpërndarja e përgjigjeve</h3>
+            <div className="space-y-1">
+              {Array.from({ length: MAX_ATTEMPTS }).map((_, i) => {
+                const count = Local_storage.get_win_rounds(i + 1);
+                const total = Local_storage.get_wins();
+                const percentage = total > 0 ? (count / total) * 100 : 0;
+                
+                return (
+                  <div key={`dist-${i}`} className="flex items-center">
+                    <div className="w-4 text-right mr-2">{i + 1}</div>
+                    <div className="flex-1 h-6 bg-[var(--background)] rounded">
+                      <div 
+                        className={`h-full rounded flex items-center justify-end pr-2 ${
+                          attempts.length === i + 1 && results[i]?.every(r => r === 2)
+                            ? 'bg-green-500' 
+                            : 'bg-[var(--foreground)]'
+                        }`}
+                        style={{ width: `${Math.max(percentage, 8)}%` }}
+                      >
+                        <span className="text-xs font-bold">{count}</span>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
+                  </div>
+                );
+              })}
             </div>
-            
-            {/* Share section */}
-            <div className="mb-4">
-              <h3 className="text-lg font-bold mb-2 text-center">Shpërndaje</h3>
-              <pre className="bg-[var(--background)] p-2 rounded mb-2 text-sm overflow-x-auto">
-                {shareMessage}
-              </pre>
-              <button 
-                onClick={copyToClipboard}
-                className="w-full py-2 bg-green-500 text-white font-bold rounded hover:bg-green-600 transition"
-              >
-                Kopijo resultatet
-              </button>
-            </div>
-            
-            {/* Close button */}
+          </div>
+          
+          {/* Share section */}
+          <div className="mb-4">
+            <h3 className="text-lg font-bold mb-2 text-center">Shpërndaje</h3>
+            <pre className="bg-[var(--background)] p-2 rounded mb-2 text-sm overflow-x-auto">
+              {shareMessage}
+            </pre>
             <button 
-              onClick={() => setShowStatsModal(false)}
-              className="w-full py-2 bg-gray-200 text-gray-800 font-bold rounded hover:bg-gray-300 transition"
+              onClick={copyToClipboard}
+              className="w-full py-2 bg-green-500 text-white font-bold rounded hover:bg-green-600 transition"
             >
-              Mbylle
+              Kopijo resultatet
             </button>
           </div>
+          
+          {/* Close button */}
+          <button 
+            onClick={() => setShowStatsModal(false)}
+            className="w-full py-2 bg-gray-200 text-gray-800 font-bold rounded hover:bg-gray-300 transition"
+          >
+            Mbylle
+          </button>
         </div>
-      )}
-      
-      {/* Keyboard */}
+      </div>
+    )}
+    {/* Keyboard */}
       <Keyboard onKeyPress={handleKeyPress} keyStates={keyStates} />
     </div>
   );

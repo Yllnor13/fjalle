@@ -1,6 +1,5 @@
 import Main_Layout from "@/components/Main_layout";
 
-
 export default function Home() {
   return (
     <main className="bg-[var(--background)] min-h-screen flex items-center justify-center">
@@ -10,4 +9,9 @@ export default function Home() {
       </div>
     </main>
   );
+}
+
+export const metadata = {
+  title: "FJALLE",
+  description: "luaj çdo ditë!",
 }

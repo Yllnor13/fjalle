@@ -18,14 +18,31 @@ const local_storage = {
         }
     },
 
+    seen_instruction(): boolean{
+        const instruction = localStorage.getItem('instruct');
+        return instruction === 'true';
+    },
+
+    set_instruction_seen(): void{
+        localStorage.setItem('instruct', 'true');
+    },
+
     remove_hardmode(): void{
         localStorage.removeItem('hard');
+    },
+
+    save_game_date(date: string): void {
+        localStorage.setItem('GameDate', date);
+    },
+    
+    get_game_date(): string | null {
+        return localStorage.getItem('GameDate');
     },
 
     finished_attempt(date : string): void{
         localStorage.setItem('date', date);
     },
-
+    
     //checks if the user has played today
     played_today(date : string): boolean{
         if(localStorage.getItem('date') == date){
@@ -111,14 +128,6 @@ const local_storage = {
         const cur_attempt = word + " " + numbers
         currentAttempts.push(cur_attempt); // Save word as key with numbers as value
         localStorage.setItem('attempts', JSON.stringify(currentAttempts));
-    },
-
-    save_game_date(date: string): void {
-        localStorage.setItem('GameDate', date);
-    },
-    
-    get_game_date(): string | null {
-        return localStorage.getItem('GameDate');
     },
     
     clear_attempts(): void {
