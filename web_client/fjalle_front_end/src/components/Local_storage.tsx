@@ -27,6 +27,16 @@ const local_storage = {
         localStorage.setItem('instruct', 'true');
     },
 
+    get_theme(): boolean{
+        const theme = localStorage.getItem('theme');
+        return theme === 'true';
+    },
+
+    set_theme(): void{
+        const theme = this.get_theme() ? 'false' : 'true'
+        localStorage.setItem('theme', theme)
+    },
+
     remove_hardmode(): void{
         localStorage.removeItem('hard');
     },
