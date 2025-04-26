@@ -24,7 +24,7 @@ const Instruction_Modal: React.FC<InstructionModalProps> = ({ onClose }) => {
         <div className="text-2xl font-bold mb-4 text-[var(--text0)] font-bold">Këshilla për lojën</div>
         
         <div className="space-y-3 text-[var(--text0)]">
-          <p>Shkruje nje fjalë më gjasht shkrojne edhe kliko &gt;</p>
+          <p>Shkruje nje fjalë më gjasht shkrojne edhe kliko "&gt;"</p>
           
           <p>Shkrojnat e gjelberta janë në vendin e duhur</p>
           
@@ -32,7 +32,7 @@ const Instruction_Modal: React.FC<InstructionModalProps> = ({ onClose }) => {
           
           <p>Shkrojnat e hinta nuk janë ne fjalë</p>
           
-          <p>Mundesh me shlye shkrojnat me &lt;</p>
+          <p>Mundesh me shlye shkrojnat me "&lt;"</p>
           
           <p>Të uroj fat</p>
         </div>
