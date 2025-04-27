@@ -29,7 +29,7 @@ const Key: React.FC<KeyProps> = ({ value, onClick, state }) => {
 
   return (
     <button
-      className={`w-12 h-14 rounded font-bold ${stateClasses[state]}`}
+      className={`w-14 h-16 rounded font-bold text-3xl ${stateClasses[state]}`}
       onClick={() => onClick(value)}
     >
       {value}

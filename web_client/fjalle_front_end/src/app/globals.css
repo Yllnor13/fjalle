@@ -10,7 +10,8 @@
   --boder-light: #aaaaaa;
   --border-dark: #444444;
 
-  --correct: #22c55e;
+  --correct: #22c55e; /* to be used with ui elements too */
+  --correct-hover:#1eae53;
   --present: #eab308;
 
   --text-light: #ffffff;

@@ -349,12 +349,12 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
     <div className="flex flex-col items-center gap-1 px-1">
       {/* Word grid */}
       {/* Responsive width container */}
-      <div className="w-full max-w-[380px] md:max-w-[250px]">
+      <div className="w-full max-w-[400px] md:max-w-[360px]">
         <div className="grid grid-rows-6 gap-1">
           {Array.from({ length: MAX_ATTEMPTS }).map((_, rowIndex) => (
             <div
               key={`row-${rowIndex}`}
-              className="grid grid-cols-6 gap-1"
+              className="grid grid-cols-6 gap-4"
             >
               {Array.from({ length: WORD_LENGTH }).map((_, colIndex) => {
                 const delay = `${colIndex * 0.2}s`;
@@ -364,9 +364,9 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
                     key={`cell-${rowIndex}-${colIndex}`}
                     className={`
                       min-w-0
-                      w-[14vw] sm:w-[12vw] md:w-10
-                      h-[15vw] sm:h-[15vw] md:h-13 
-                      text-[14px] sm:text-[12px] md:text-[20px]
+                      w-[14vw] sm:w-[12vw] md:w-15
+                      h-[15vw] sm:h-[15vw] md:h-18
+                      text-[14px] sm:text-[12px] md:text-5xl
                       flex items-center justify-center
                       border rounded
                       overflow-hidden whitespace-nowrap
@@ -486,7 +486,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
             </pre>
             <button 
               onClick={copyToClipboard}
-              className="w-full py-2 bg-green-500 text-white font-bold rounded hover:bg-green-600 transition"
+              className="w-full py-2 bg-[var(--correct)] text-[var(--text-light)] font-bold rounded hover:bg-[var(--correct-hover)] transition"
             >
               Kopijo resultatet
             </button>
@@ -495,7 +495,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
           {/* Close button */}
           <button 
             onClick={() => setShowStatsModal(false)}
-            className="w-full py-2 bg-gray-200 text-gray-800 font-bold rounded hover:bg-gray-300 transition"
+            className="w-full py-2 bg-[var(--text-light)] text-[var(--text-dark)] font-bold rounded hover:bg-[var(--unused-light)] transition"
           >
             Mbylle
           </button>
