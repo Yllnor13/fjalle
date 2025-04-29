@@ -12,9 +12,9 @@ const MainLayout: React.FC = () => {
   const [showInstructionModal, setShowInstructionModal] = useState(false);
   const [showHorizontalWarning, setShowHorizontalWarning] = useState(false);
   const [stats_icon, get_stats_icon] = useState('/icons/stats_icon_d.svg');
-  const [kosovalb_icon, get_kosovalb_icon] = useState('/icons/kosovalb_icon_d.svg');
-  const [theme_icon, get_theme_icon] = useState('/icons/kosovalb_icon_d.svg');
-  const [instruction_icon, get_instruction_icon] = useState('/icons/kosovalb_icon_d.svg');
+  const [kosovalb_icon, get_kosovalb_icon] = useState('/icons/light/kosovalb_icon_l.svg');
+  const [theme_icon, get_theme_icon] = useState('/icons/light/theme_icon_l.svg');
+  const [instruction_icon, get_instruction_icon] = useState('/icons/light/instruction_icon_l.svg');
 
   // Check if instructions have been seen before
   useEffect(() => {
@@ -89,8 +89,33 @@ const MainLayout: React.FC = () => {
     return () => mediaQuery.removeEventListener('change', updateIcon);
   }, []);
 
+  /*  use this to generate the tutorial text with words as the list
+  {Array.from({ length: WORD_LENGTH }).map((_, colIndex) => {
+    const delay = `${colIndex * 0.2}s`;
+    return (
+      <div
+        key={`cell-${rowIndex}-${colIndex}`}
+        className={`
+          min-w-0
+          w-[14vw] sm:w-[12vw] md:w-15
+          h-[15vw] sm:h-[15vw] md:h-18
+          text-4xl sm:text-4xl md:text-3xl
+          flex items-center justify-center
+          border rounded
+          overflow-hidden whitespace-nowrap
+          transition-colors duration-500
+          ${getCellClass(rowIndex, colIndex)}
+        `}
+        style={{ transitionDelay: delay }}
+      >
+        {getCellContent(rowIndex, colIndex)}
+      </div>
+    );
+  })}
+  */
+
   return (
-    <div className="min-h-screen max-h-screen bg-[var(--background)] flex flex-col">
+    <div className="min-h-screen max-h-screen bg-[var(--background)] flex flex-col md:gap-6">
       {/* Header bar */}
       <div className="w-full bg-[var(--background)] px-4 flex justify-between items-center border-b-2 border-[var(--absent)]">
         {/* Left empty space for balance */}

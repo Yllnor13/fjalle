@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Keyboard from './keyboard';
 import Local_storage from './Local_storage';
 import {get_Word, send_Word} from '@/lib/api_client';
+import local_storage from './Local_storage';
 
 // Define result states for each letter
 type LetterResult = 0 | 1 | 2; // 0: not in word, 1: wrong position, 2: correct position
@@ -346,10 +347,10 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
   }, [error]);
 
   return (
-    <div className="flex flex-col items-center gap-1 px-1">
+    <div className="flex flex-col items-center gap-6 px-1">
       {/* Word grid */}
       {/* Responsive width container */}
-      <div className="w-full max-w-[400px] md:max-w-[360px]">
+      <div className="w-full max-w-[360px] md:max-w-[360px]">
         <div className="grid grid-rows-6 gap-1">
           {Array.from({ length: MAX_ATTEMPTS }).map((_, rowIndex) => (
             <div
@@ -358,7 +359,6 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
             >
               {Array.from({ length: WORD_LENGTH }).map((_, colIndex) => {
                 const delay = `${colIndex * 0.2}s`;
-
                 return (
                   <div
                     key={`cell-${rowIndex}-${colIndex}`}
@@ -366,7 +366,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
                       min-w-0
                       w-[14vw] sm:w-[12vw] md:w-15
                       h-[15vw] sm:h-[15vw] md:h-18
-                      text-[14px] sm:text-[12px] md:text-5xl
+                      text-4xl sm:text-4xl md:text-3xl
                       flex items-center justify-center
                       border rounded
                       overflow-hidden whitespace-nowrap
@@ -488,7 +488,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
               onClick={copyToClipboard}
               className="w-full py-2 bg-[var(--correct)] text-[var(--text-light)] font-bold rounded hover:bg-[var(--correct-hover)] transition"
             >
-              Kopijo resultatet
+              Kopjo rezultatet
             </button>
           </div>
           
