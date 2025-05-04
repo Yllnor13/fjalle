@@ -300,7 +300,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
       if (colIndex < currentAttempt.length) {
         return `${baseClasses} text-[var(--text0)] border-[var(--cell-border-typing)] bg-[var(--cell-bg-typing)] text-[var(--cell-text-typing)]`;
       }
-      return `${baseClasses} border-gray-300`;
+      return `${baseClasses} border-[var(--absent)]`;
     }
     
     // Completed rows with results
@@ -346,16 +346,16 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
     }
   }, [error]);
 
-  return (
-    <div className="flex flex-col items-center gap-6 px-1">
+  return ( //use border "border-red-300" to get borders on everyting
+    <div className="flex flex-col items-center gap-[2vh] ">
       {/* Word grid */}
       {/* Responsive width container */}
-      <div className="w-full max-w-[360px] md:max-w-[360px]">
-        <div className="grid grid-rows-6 gap-1">
+      <div className="max-w-[80vw] max-h-[50vh] overflow-auto">
+        <div className="grid grid-rows-6 gap-[0.5vh]">
           {Array.from({ length: MAX_ATTEMPTS }).map((_, rowIndex) => (
             <div
               key={`row-${rowIndex}`}
-              className="grid grid-cols-6 gap-4"
+              className="grid grid-cols-6 gap-[0.3vw]"
             >
               {Array.from({ length: WORD_LENGTH }).map((_, colIndex) => {
                 const delay = `${colIndex * 0.2}s`;
@@ -363,13 +363,12 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
                   <div
                     key={`cell-${rowIndex}-${colIndex}`}
                     className={`
-                      min-w-0
-                      w-[14vw] sm:w-[12vw] md:w-15
-                      h-[15vw] sm:h-[15vw] md:h-18
-                      text-4xl sm:text-4xl md:text-3xl
+                      max-w-[13vw]
+                      max-h-[7vh]
+                      aspect-square
+                      text-xl
                       flex items-center justify-center
                       border rounded
-                      overflow-hidden whitespace-nowrap
                       transition-colors duration-500
                       ${getCellClass(rowIndex, colIndex)}
                     `}

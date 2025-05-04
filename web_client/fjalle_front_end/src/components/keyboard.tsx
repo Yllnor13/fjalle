@@ -29,7 +29,7 @@ const Key: React.FC<KeyProps> = ({ value, onClick, state }) => {
 
   return (
     <button
-      className={`w-14 h-16 rounded font-bold text-3xl ${stateClasses[state]}`}
+      className={`w-[9vw] md:w-[3vw] h-[8vh] rounded font-bold text-3xl ${stateClasses[state]}`}
       onClick={() => onClick(value)}
     >
       {value}
@@ -77,9 +77,9 @@ const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, keyStates }) => {
   }, [onKeyPress]);
 
   return (
-    <div className="w-full max-w max-h">
+    <div className="w-full max-w max-h-[30vh]">
       {keyboardRows.map((row, rowIndex) => (
-        <div key={rowIndex} className="flex justify-center gap-1 my-1">
+        <div key={rowIndex} className="flex justify-center gap-[0.5vw] md:gap-[0.2vw] my-[0.5vh]">
           {row.map((key) => (
             <Key
               key={key}

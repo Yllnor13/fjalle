@@ -11,7 +11,7 @@ const MainLayout: React.FC = () => {
   const [showStatsModal, setShowStatsModal] = useState(false);
   const [showInstructionModal, setShowInstructionModal] = useState(false);
   const [showHorizontalWarning, setShowHorizontalWarning] = useState(false);
-  const [stats_icon, get_stats_icon] = useState('/icons/stats_icon_d.svg');
+  const [stats_icon, get_stats_icon] = useState('/icons/light/stats_icon_l.svg');
   const [kosovalb_icon, get_kosovalb_icon] = useState('/icons/light/kosovalb_icon_l.svg');
   const [theme_icon, get_theme_icon] = useState('/icons/light/theme_icon_l.svg');
   const [instruction_icon, get_instruction_icon] = useState('/icons/light/instruction_icon_l.svg');
@@ -66,23 +66,20 @@ const MainLayout: React.FC = () => {
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
+
     const updateIcon = (e?: MediaQueryListEvent) => {
       const themeStored = localStorage.getItem('theme');
-    
-      // Use dark mode by default if theme isn't set yet
-      const isDark = themeStored === null 
-        ? true 
-        : themeStored === 'true' 
-          ? true 
-          : e?.matches ?? mediaQuery.matches;
+
+      const prefersDark = e?.matches ?? mediaQuery.matches;
+      const isDark = themeStored === null ? prefersDark : themeStored === 'true';
+
       get_stats_icon(isDark ? '/icons/dark/stats_icon_d.svg' : '/icons/light/stats_icon_l.svg');
       get_kosovalb_icon(isDark ? '/icons/dark/kosovalb_icon_d.svg' : '/icons/light/kosovalb_icon_l.svg');
       get_theme_icon(isDark ? '/icons/dark/theme_icon_d.svg' : '/icons/light/theme_icon_l.svg');
       get_instruction_icon(isDark ? '/icons/dark/instruction_icon_d.svg' : '/icons/light/instruction_icon_l.svg');
-      
     };
-  
+
+    
     updateIcon();
     mediaQuery.addEventListener('change', updateIcon);
   
@@ -115,9 +112,9 @@ const MainLayout: React.FC = () => {
   */
 
   return (
-    <div className="min-h-screen max-h-screen bg-[var(--background)] flex flex-col md:gap-6">
+    <div className="h-[100dvh] overflow-hidden bg-[var(--background)] flex flex-col">
       {/* Header bar */}
-      <div className="w-full bg-[var(--background)] px-4 flex justify-between items-center border-b-2 border-[var(--absent)]">
+      <div className="w-full bg-[var(--background)] px-[2vw] flex justify-between items-center border-b-2 border-[var(--absent)]">
         {/* Left empty space for balance */}
         <div className="flex items-center space-x-6">
           {/* kosovalb button*/}
@@ -138,7 +135,7 @@ const MainLayout: React.FC = () => {
           </button>
         </div>
         {/* Center title */}
-        <h1 className="text-2xl font-bold text-center text-[var(--text0)]">FJALLE</h1>
+        <h1 className="text-xl font-bold text-center text-[var(--text0)]">FJALA E DITES</h1>
 
         {/* Right aligned buttons */}
         <div className="flex items-center space-x-6">

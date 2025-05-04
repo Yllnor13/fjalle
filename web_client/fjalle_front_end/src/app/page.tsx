@@ -2,9 +2,9 @@ import Main_Layout from "@/components/Main_layout";
 
 export default function Home() {
   return (
-    <main className="bg-[var(--background)] min-h-screen flex items-center justify-center">
+    <main className="bg-[var(--background)] min-h-screen overflow-hidden">
       {/* No frame for desktop view */}
-      <div className="w-full h-full">
+      <div className="">
         <Main_Layout/>
       </div>
     </main>
@@ -12,6 +12,6 @@ export default function Home() {
 }
 
 export const metadata = {
-  title: "FJALLE",
+  title: "Fjala e Dites",
   description: "luaj çdo ditë!",
 }
