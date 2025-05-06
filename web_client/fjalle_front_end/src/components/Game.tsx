@@ -19,7 +19,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
   const [shareMessage, setShareMessage] = useState<string>('');
   const [today_date_ui, set_date] = useState<string>('');
   const [today_word, set_word] = useState<string>('');
-  
+
   const MAX_ATTEMPTS = 6;
   const WORD_LENGTH = 6;
 
@@ -46,23 +46,23 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
       let attemptArray: string[] = [];
       const resultsArray: LetterResult[][] = [];
       const newKeyStates: Record<string, KeyState> = {};
-      
+
       // Process each attempt in the savedAttempts object
       savedAttempts.forEach((word) => {
         const attempt = word.split(" ")
         attemptArray.push(attempt[0])
         const resultDigits = attempt[1].split('').map(Number) as LetterResult[];
         resultsArray.push(resultDigits);
-        
+
         // Update key states based on this attempt's result
         updateKeyStates(newKeyStates, word.split(" ")[0], resultDigits);
       });
-      
+
       // Update state with loaded data
       setAttempts(attemptArray);
       setResults(resultsArray);
       setKeyStates(newKeyStates);
-      
+
       // Check if game is already over
       const lastResult = resultsArray[resultsArray.length - 1];
       console.log("last result ", lastResult)
@@ -220,7 +220,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
 
   // Generate share text with emojis based on results
   const generateShareText = (attemptArray = attempts, resultsArray = results): string => {
-    let shareText = `Fjalle ${today_date_ui} ${attemptArray.length}/${MAX_ATTEMPTS}\n\n`;
+    let shareText = `Fjala e dites ${today_date_ui} ${attemptArray.length}/${MAX_ATTEMPTS}\n\n`;
     
     // Create emoji grid based on results
     resultsArray.forEach(row => {
@@ -468,7 +468,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
                         }`}
                         style={{ width: `${Math.max(percentage, 8)}%` }}
                       >
-                        <span className="text-xs font-bold">{count}</span>
+                        <span className="text-xs text-[var(--text-light)] font-bold">{count}</span>
                       </div>
                     </div>
                   </div>
@@ -478,7 +478,8 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
           </div>
           
           {/* Share section */}
-          <div className="mb-4">
+          {isGameOver && (
+            <div className="mb-4">
             <h3 className="text-lg font-bold mb-2 text-center">Shpërndaje</h3>
             <pre className="bg-[var(--background)] p-2 rounded mb-2 text-sm overflow-x-auto">
               {shareMessage}
@@ -490,11 +491,11 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
               Kopjo rezultatet
             </button>
           </div>
-          
+          )}
           {/* Close button */}
           <button 
             onClick={() => setShowStatsModal(false)}
-            className="w-full py-2 bg-[var(--text-light)] text-[var(--text-dark)] font-bold rounded hover:bg-[var(--unused-light)] transition"
+            className="w-full py-2 text-[var(--text-0)] font-bold rounded"
           >
             Mbylle
           </button>

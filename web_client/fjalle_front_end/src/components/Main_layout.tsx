@@ -64,26 +64,27 @@ const MainLayout: React.FC = () => {
     local_storage.set_instruction_seen();
   };
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-    const updateIcon = (e?: MediaQueryListEvent) => {
-      const themeStored = localStorage.getItem('theme');
-
-      const prefersDark = e?.matches ?? mediaQuery.matches;
-      const isDark = themeStored === null ? prefersDark : themeStored === 'true';
-
-      get_stats_icon(isDark ? '/icons/dark/stats_icon_d.svg' : '/icons/light/stats_icon_l.svg');
-      get_kosovalb_icon(isDark ? '/icons/dark/kosovalb_icon_d.svg' : '/icons/light/kosovalb_icon_l.svg');
-      get_theme_icon(isDark ? '/icons/dark/theme_icon_d.svg' : '/icons/light/theme_icon_l.svg');
-      get_instruction_icon(isDark ? '/icons/dark/instruction_icon_d.svg' : '/icons/light/instruction_icon_l.svg');
-    };
-
-    
-    updateIcon();
-    mediaQuery.addEventListener('change', updateIcon);
+  const updateThemeAndIcons = () => {
+    const themeStored = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = themeStored === null ? prefersDark : themeStored === 'true';
   
-    return () => mediaQuery.removeEventListener('change', updateIcon);
+    document.documentElement.classList.toggle('dark', isDark);
+  
+    get_stats_icon(isDark ? '/icons/dark/stats_icon_d.svg' : '/icons/light/stats_icon_l.svg');
+    get_kosovalb_icon(isDark ? '/icons/dark/kosovalb_icon_d.svg' : '/icons/light/kosovalb_icon_l.svg');
+    get_theme_icon(isDark ? '/icons/dark/theme_icon_d.svg' : '/icons/light/theme_icon_l.svg');
+    get_instruction_icon(isDark ? '/icons/dark/instruction_icon_d.svg' : '/icons/light/instruction_icon_l.svg');
+  };
+
+  useEffect(() => {
+    local_storage.apply_theme(); // apply theme class to <html>
+    updateThemeAndIcons(); // apply icons on load
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQuery.addEventListener('change', updateThemeAndIcons);
+
+    return () => mediaQuery.removeEventListener('change', updateThemeAndIcons);
   }, []);
 
   /*  use this to generate the tutorial text with words as the list
@@ -122,14 +123,17 @@ const MainLayout: React.FC = () => {
             href="https://www.facebook.com/share/1BiJWjmViJ/"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-1 py-1 flex items-center text-sm font-medium text-[var(--text0)] hover:bg-[var-(--unused)] rounded"
+            className="px-1 py-1 flex items-center text-sm font-medium text-[var(--text0)] hover:bg-[var(--unused)] rounded"
           >
             <img src={kosovalb_icon} alt="kosovalb" width="35" height="35" />
           </a>
           {/* theme button */}
           <button
-            onClick={() => local_storage.set_theme()}
-            className="px-1 py-1 flex items-center text-sm font-medium text-[var(--text0)] hover:bg-[var-(--unused)] rounded"
+            onClick={() => {
+              local_storage.set_theme();
+              updateThemeAndIcons(); // immediately reflect new icons
+            }}
+            className="px-1 py-1 flex items-center text-sm font-medium text-[var(--text0)] hover:bg-[var(--unused)] rounded"
           >
             <img src={theme_icon} alt="light or dark mode" width="25" height="25" />
           </button>
@@ -142,14 +146,14 @@ const MainLayout: React.FC = () => {
           {/* instruction button */}
           <button
             onClick={() => setShowInstructionModal(true)}
-            className="px-1 py-1 flex items-center text-5xl font-medium text-[var(--text0)] hover:bg-[var-(--unused)] rounded"
+            className="px-1 py-1 flex items-center text-5xl font-medium text-[var(--text0)] hover:bg-[var(--unused)] rounded"
           >
             ?
           </button>
           {/*Stats Button*/}
           <button
             onClick={() => setShowStatsModal(true)}
-            className="px-1 py-1 flex items-center text-sm font-medium text-[var(--text0)] hover:bg-[var-(--unused)] rounded"
+            className="px-1 py-1 flex items-center text-sm font-medium text-[var(--text0)] hover:bg-[var(--unused)] rounded"
           >
             <img src={stats_icon} alt="Statistics" width="35" height="35" />
           </button>

@@ -11,26 +11,42 @@
   --border-dark: #444444;
 
   --correct: #22c55e; /* to be used with ui elements too */
-  --correct-hover:#1eae53;
+  --correct-hover: #1eae53;
   --present: #eab308;
 
   --text-light: #ffffff;
   --text-dark: #000000;
 
   --absent-light: #808080;
+  --absent-dark: #333333;
+  
+  --unused-dark: #707070;
   --unused-light: #cccccc;
 
-  --absent-dark: #333333;
-  --unused-dark: #707070;
+  --pressed-light: #aaaaaa;
+  --pressed-dark: #aaaaaa;
 
-  /* Set the default (light mode) */
+  /* Default (light mode) */
   --foreground: var(--foreground-light);
   --background: var(--background-light);
   --absent: var(--absent-light);
   --unused: var(--unused-light);
   --text1: var(--text-light);
   --text0: var(--text-dark);
-  --border: var(--border-light)
+  --border: var(--border-light);
+  --pressed: var(--pressed-light)
+}
+
+/* Dark mode overrides */
+.dark {
+  --foreground: var(--foreground-dark);
+  --background: var(--background-dark);
+  --absent: var(--absent-dark);
+  --unused: var(--unused-dark);
+  --text1: var(--text-dark);
+  --text0: var(--text-light);
+  --border: var(--border-dark);
+  --pressed: var(--pressed-dark)
 }
 
 @theme inline {
@@ -60,21 +76,6 @@
   color: var(--text0);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground: var(--foreground-dark);
-    --background: var(--background-dark);
-
-    --absent: var(--absent-dark);
-    --unused: var(--unused-dark);
-
-    --text1: var(--text-dark);
-    --text0: var(--text-light);
-
-    --border: var(--border-dark)
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
@@ -82,8 +83,14 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fadeIn {

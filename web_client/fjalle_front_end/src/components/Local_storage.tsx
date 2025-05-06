@@ -32,9 +32,21 @@ const local_storage = {
         return theme === 'true';
     },
 
-    set_theme(): void{
-        const theme = this.get_theme() ? 'false' : 'true'
-        localStorage.setItem('theme', theme)
+    set_theme(): void {
+        const current = this.get_theme(); // true = dark
+        const newTheme = !current;
+    
+        localStorage.setItem('theme', newTheme.toString());
+    
+        document.documentElement.classList.toggle('dark', newTheme); // assuming 'dark' class toggles dark mode
+    },
+
+    apply_theme(): void {
+        const themeStored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = themeStored === null ? prefersDark : themeStored === 'true';
+    
+        document.documentElement.classList.toggle('dark', isDark);
     },
 
     remove_hardmode(): void{
