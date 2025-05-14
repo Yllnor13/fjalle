@@ -101,7 +101,6 @@ const MainLayout: React.FC = () => {
           flex items-center justify-center
           border rounded
           overflow-hidden whitespace-nowrap
-          transition-colors duration-500
           ${getCellClass(rowIndex, colIndex)}
         `}
         style={{ transitionDelay: delay }}
