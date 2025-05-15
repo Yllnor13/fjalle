@@ -19,6 +19,8 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
   const [shareMessage, setShareMessage] = useState<string>('');
   const [today_date_ui, set_date] = useState<string>('');
   const [today_word, set_word] = useState<string>('');
+  const [won, set_won] = useState<boolean>(false);
+  const [lost, set_lost] = useState<boolean>(false);
 
   const MAX_ATTEMPTS = 6;
   const WORD_LENGTH = 6;
@@ -31,14 +33,9 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
     const savedGameDate = Local_storage.get_game_date();
     const savedAttempts = Local_storage.get_attempt() || {};
     const attemptCount = Object.keys(savedAttempts).length;
-    handle_get();
 
     const today_date = get_todays_date();
     set_date(today_date);
-    console.log("todays date ", get_todays_date);
-    console.log("savedGameDate ", savedGameDate);
-    console.log("todayDate ", today_date);
-    console.log("savedAttempts ", savedAttempts);
 
     // Only restore the game if it's from today
     if (savedGameDate === today_date && attemptCount > 0) {
@@ -65,15 +62,16 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
 
       // Check if game is already over
       const lastResult = resultsArray[resultsArray.length - 1];
-      console.log("last result ", lastResult)
-      if (
-        (lastResult && lastResult.every(r => r === 2)) || 
-        attemptArray.length >= MAX_ATTEMPTS
-      ) {
+
+      set_won(lastResult && lastResult.every(r => r === 2));
+      set_lost(attemptArray.length >= MAX_ATTEMPTS);
+
+      if (won || lost) {
+        if (won) {
+          set_word(attemptArray[attemptArray.length - 1]);
+        }
         setIsGameOver(true);
-        // Generate share message here for loaded game state
         setShareMessage(generateShareText(attemptArray, resultsArray));
-        // Show stats modal if the game was already over when loading
         setTimeout(() => setShowStatsModal(true), 1000);
       }
     } else if (savedGameDate !== today_date) {
@@ -84,16 +82,6 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
     // Save today's date to track the current game
     Local_storage.save_game_date(today_date);
   }, [today_date_ui]);
-
-  const handle_get = async () => {
-    try{
-      const resget = await get_Word.get_Data();
-      set_word(resget.data);
-    }
-    catch(err){
-      console.log("couldnt find word");
-    }
-  }
 
   const decodeData = (val: number): { data: string, exist: boolean } => {
     const exist = Boolean(val & 1); // flag to know if the word was in the list
@@ -420,9 +408,14 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
                 : "Suksese ne vazhdim!"}
             </p>
 
-            {isGameOver && today_word && (
+            {won && (
               <p className="mt-2">
                 Fjala e sotme ishte: <span className="font-bold uppercase">{today_word}</span>
+              </p>
+            )}
+            {lost && (
+              <p className="mt-2">
+                Nuk i a dole? pyesni miqtë tuaj!
               </p>
             )}
           </div>

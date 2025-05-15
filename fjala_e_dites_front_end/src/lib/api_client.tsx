@@ -1,6 +1,5 @@
-//const API_URL = 'http://127.0.0.1:5000'
-//const API_URL = 'http://192.168.10.161:5000/'
-const API_URL = 'https://fjalle.onrender.com'
+import { API_URL } from "./link";
+
 interface APIRequestConfig{
     method: 'GET' | 'POST';
     data?: string;
