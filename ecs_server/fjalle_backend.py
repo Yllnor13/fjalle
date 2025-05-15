@@ -79,8 +79,7 @@ allowed_origins = [
     "http://192.168.10.161:3000",  # LAN frontend (mobile, etc.)
     "http://172.24.229.75:3000",
     "http://172.24.229.75:5000",   # WSL backend (if necessary)
-    "https://fjalle.onrender.com",
-    "https://fjalle.loca.lt",
+    "https://fjalaedites.al",
 ]
 
 # Get port from environment variable or use 8080 as default
