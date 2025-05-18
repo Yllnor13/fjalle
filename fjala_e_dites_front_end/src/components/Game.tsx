@@ -62,17 +62,14 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
 
       // Check if game is already over
       const lastResult = resultsArray[resultsArray.length - 1];
-
-      set_won(lastResult && lastResult.every(r => r === 2));
-      set_lost(attemptArray.length >= MAX_ATTEMPTS);
-
-      if (won || lost) {
+      set_won(resultsArray[resultsArray.length - 1] && lastResult.every(r => r === 2))
+      if (won || (attemptArray.length >= MAX_ATTEMPTS)) {
         if (won) {
           set_word(attemptArray[attemptArray.length - 1]);
         }
-        setIsGameOver(true);
-        setShareMessage(generateShareText(attemptArray, resultsArray));
-        setTimeout(() => setShowStatsModal(true), 1000);
+        console.log("on page load")
+        setIsGameOver(true)
+        handleShowStats();
       }
     } else if (savedGameDate !== today_date) {
       // If it's a new day, clear previous attempts
@@ -122,9 +119,6 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
       const res = await send_Word.send_Data(currentAttempt, get_todays_date());
       const responseValue = parseInt(res.data);
       const response = decodeData(responseValue);
-      if (response.data.split('').every((d: string) => d === '2')) {
-        setIsGameOver(true);
-      }
       // Check if the word is not in the word list (server returns exists: false)
       if (!response.exist) { //(!response.exists && !isHardmode)
         setError(`"${currentAttempt}" is not in the word list`);
@@ -154,7 +148,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
       const isLoss = newAttempts.length >= MAX_ATTEMPTS && !isWin;
       
       if (isWin || isLoss) {
-        handleGameOver(isWin, newAttempts, newResults);
+        handleGameOver(isWin);
       }
     } catch (error) {
       console.error('Error submitting word:', error);
@@ -207,8 +201,8 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
   };
 
   // Generate share text with emojis based on results
-  const generateShareText = (attemptArray = attempts, resultsArray = results): string => {
-    let shareText = `Fjala e dites ${today_date_ui} ${attemptArray.length}/${MAX_ATTEMPTS}\n\n`;
+  const generateShareText = (resultsArray = results): string => {
+    let shareText = `Fjala e dites ${today_date_ui} ${resultsArray.length}/${MAX_ATTEMPTS}\n\n`;
     
     // Create emoji grid based on results
     resultsArray.forEach(row => {
@@ -229,13 +223,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
   };
 
   // Handle game completion
-  const handleGameOver = (won: boolean, finalAttempts = attempts, finalResults = results) => { 
-    if (Local_storage.get_record_bool(today_date_ui)) {
-      // Stats already recorded, just show the modal
-      setShowStatsModal(true);
-      return;
-    }
-    
+  const handleGameOver = (won : boolean, finalResults = results) => { 
     setIsGameOver(true);
     Local_storage.finished_attempt(today_date_ui);
     Local_storage.add_record_bool(today_date_ui);
@@ -244,19 +232,23 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
     if (won) {
       Local_storage.add_win();
       Local_storage.save_cur_streak();
-      Local_storage.save_win_round(finalAttempts.length);
+      Local_storage.save_win_round(finalResults.length);
+      set_word(currentAttempt);
     } else {
       Local_storage.add_loss();
       Local_storage.remove_cur_streak();
     }
     
+    handleShowStats();
+  };
+
+  const handleShowStats = (finalResults = results) => {
     // Generate share text with the final state
-    const message = generateShareText(finalAttempts, finalResults);
-    setShareMessage(message);
+    setShareMessage(generateShareText(finalResults));
     
     // Show stats modal
-    setShowStatsModal(true);
-  };
+    setTimeout(() => setShowStatsModal(true), 1000);
+  }
 
   // Copy results to clipboard
   const copyToClipboard = () => {
@@ -408,14 +400,15 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
                 : "Suksese ne vazhdim!"}
             </p>
 
-            {won && (
+            {today_word && (
               <p className="mt-2">
                 Fjala e sotme ishte: <span className="font-bold uppercase">{today_word}</span>
               </p>
             )}
-            {lost && (
+
+            {!today_word && (
               <p className="mt-2">
-                Nuk i a dole? pyesni miqtë tuaj!
+                nuk i a dole? Pyesni miqtë tuaj!
               </p>
             )}
           </div>

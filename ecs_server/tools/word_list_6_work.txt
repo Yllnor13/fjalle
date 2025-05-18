@@ -21,6 +21,7 @@ arkiva
 arkivë
 armike
 armiku
+artist
 arushë
 atkiat
 aulona
@@ -32,6 +33,7 @@ banesë
 bankat
 banori
 banues
+bardhë
 bariut
 barkut
 bazike
@@ -46,6 +48,7 @@ bezdis
 biblik
 bigami
 bilbil
+bimore
 biruca
 biseda
 bisedë
@@ -476,6 +479,7 @@ mbyllë
 mbytem
 mbytet
 mbërri
+medina
 melaqe
 mendim
 mendoi
@@ -765,6 +769,8 @@ sëmund
 sëmura
 sëmure
 tabelë
+terasa
+terasë
 testim
 thekso
 thesar

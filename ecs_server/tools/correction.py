@@ -1,6 +1,6 @@
 words_to_remove = "".split()
 
-words_to_add = "shokun".split()
+words_to_add = "medina dafina".split()
 
 with open("word_list_6_work.txt", 'r', newline='') as wordslist:
     words = [line.strip() for line in wordslist if line.strip()]
