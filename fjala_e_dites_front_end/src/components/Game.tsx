@@ -402,7 +402,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
 
             {today_word && (
               <p className="mt-2">
-                Fjala e sotme ishte: <span className="font-bold uppercase">{today_word}</span>
+                Fjala e dites ishte: <span className="font-bold uppercase">{today_word}</span>
               </p>
             )}
 

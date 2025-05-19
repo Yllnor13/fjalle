@@ -87,30 +87,6 @@ const MainLayout: React.FC = () => {
     return () => mediaQuery.removeEventListener('change', updateThemeAndIcons);
   }, []);
 
-  /*  use this to generate the tutorial text with words as the list
-  {Array.from({ length: WORD_LENGTH }).map((_, colIndex) => {
-    const delay = `${colIndex * 0.2}s`;
-    return (
-      <div
-        key={`cell-${rowIndex}-${colIndex}`}
-        className={`
-          min-w-0
-          w-[14vw] sm:w-[12vw] md:w-15
-          h-[15vw] sm:h-[15vw] md:h-18
-          text-4xl sm:text-4xl md:text-3xl
-          flex items-center justify-center
-          border rounded
-          overflow-hidden whitespace-nowrap
-          ${getCellClass(rowIndex, colIndex)}
-        `}
-        style={{ transitionDelay: delay }}
-      >
-        {getCellContent(rowIndex, colIndex)}
-      </div>
-    );
-  })}
-  */
-
   return (
     <div className="h-[100dvh] overflow-hidden bg-[var(--background)] flex flex-col">
       {/* Header bar */}
