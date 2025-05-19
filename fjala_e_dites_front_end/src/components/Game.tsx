@@ -280,7 +280,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
       if (colIndex < currentAttempt.length) {
         return `${baseClasses} text-[var(--text0)] border-[var(--cell-border-typing)] bg-[var(--cell-bg-typing)] text-[var(--cell-text-typing)]`;
       }
-      return `${baseClasses} border-[var(--absent)]`;
+      return `${baseClasses} border-[var(--text0)]`;
     }
     
     // Completed rows with results
@@ -408,7 +408,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
 
             {!today_word && (
               <p className="mt-2">
-                nuk i a dole? Pyesni miqtë tuaj!
+                Nuk i a dole? Pyesni miqtë tuaj nëse e kanë zgjidhur.!
               </p>
             )}
           </div>
