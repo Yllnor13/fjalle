@@ -1,6 +1,6 @@
-words_to_remove = "".split()
+words_to_remove = "gentit".split()
 
-words_to_add = "medina dafina".split()
+words_to_add = "medina dafina mozaik qetësi kosovë gjinia gjesti verdhë".split()
 
 with open("word_list_6_work.txt", 'r', newline='') as wordslist:
     words = [line.strip() for line in wordslist if line.strip()]

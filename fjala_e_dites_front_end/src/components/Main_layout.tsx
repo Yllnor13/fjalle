@@ -5,12 +5,14 @@ import React, { useState, useEffect } from 'react';
 import Game from './Game';
 import Instruction_Modal from './Instruction_Modal';
 import Horizontal_Warning_Modal from './Horizontal_warning';
+import Credits_Modal from './Credits';
 import local_storage from './Local_storage';
 
 const MainLayout: React.FC = () => {
   const [showStatsModal, setShowStatsModal] = useState(false);
   const [showInstructionModal, setShowInstructionModal] = useState(false);
   const [showHorizontalWarning, setShowHorizontalWarning] = useState(false);
+  const [ShowCreditsModal, setShowCreditsModal] = useState(false)
   const [stats_icon, get_stats_icon] = useState('/icons/light/stats_icon_l.svg');
   const [kosovalb_icon, get_kosovalb_icon] = useState('/icons/light/kosovalb_icon_l.svg');
   const [theme_icon, get_theme_icon] = useState('/icons/light/theme_icon_l.svg');
@@ -88,7 +90,7 @@ const MainLayout: React.FC = () => {
   }, []);
 
   return (
-    <div className="h-[100dvh] overflow-hidden bg-[var(--background)] flex flex-col">
+    <div className="h-[100dvh] overflow-auto bg-[var(--background)] flex flex-col">
       {/* Header bar */}
       <div className="w-full bg-[var(--background)] px-[2vw] flex justify-between items-center border-b-2 border-[var(--absent)]">
         {/* Left empty space for balance */}
@@ -114,8 +116,12 @@ const MainLayout: React.FC = () => {
           </button>
         </div>
         {/* Center title */}
-        <h1 className="text-xl font-bold text-center text-[var(--text0)]">FJALA E DITES</h1>
-
+        <button
+          onClick={() => setShowCreditsModal(true)}
+          className="px-1 py-1 flex items-center text-5xl font-medium text-[var(--text0)] hover:bg-[var(--unused)] rounded"
+        >
+          <h1 className="text-xl font-bold text-center text-[var(--text0)]">FJALA E DITES</h1>
+        </button>
         {/* Right aligned buttons */}
         <div className="flex items-center space-x-6">
           {/* instruction button */}
@@ -123,7 +129,7 @@ const MainLayout: React.FC = () => {
             onClick={() => setShowInstructionModal(true)}
             className="px-1 py-1 flex items-center text-5xl font-medium text-[var(--text0)] hover:bg-[var(--unused)] rounded"
           >
-            ?
+            <img src={instruction_icon} alt="light or dark mode" width="35" height="35" />
           </button>
           {/*Stats Button*/}
           <button
@@ -143,6 +149,11 @@ const MainLayout: React.FC = () => {
       {/* Instruction Modal */}
       {showInstructionModal && (
         <Instruction_Modal onClose={handleCloseInstructionModal} />
+      )}
+
+      {/* Credits Modal */}
+      {ShowCreditsModal && (
+        <Credits_Modal onClose={() => setShowCreditsModal(false)}/>
       )}
 
       {/* Horizontal Warning Modal */}

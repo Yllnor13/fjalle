@@ -61,7 +61,7 @@ const getColorClass = (state: KeyState) => {
 const Instruction_Modal: React.FC<InstructionModalProps> = ({ onClose }) => {
   return (
     <div 
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+      className="fixed inset-0 bg-black/70 backdrop-blur z-50 flex justify-center items-start overflow-auto p-4"
       style={{
         animation: "0.3s ease-out forwards modalFadeIn"
       }}
@@ -80,23 +80,7 @@ const Instruction_Modal: React.FC<InstructionModalProps> = ({ onClose }) => {
           <p>• Shkruaje një fjalë më gjashtë shkronja dhe kliko "&gt;".</p>
         </div>
         <div className={baseTextClass}>
-          <p>• Shkronjat me ngjyrë të hirtë nuk janë në fjalë.</p>
-        </div>
-        <div className="flex justify-center gap-1 mb-4">
-          {"bunker".split("").map((letter, index) => (
-            <div
-              key={index}
-              className={`
-                ${baseLetterClass}
-                ${getColorClass(newKeyStates["bunker"][index])}
-              `}
-            >
-              {letter}
-            </div>
-          ))}
-        </div>
-        <div className={baseTextClass}>
-          <p>• Shkronjat me ngjyrë të verdhë janë në fjalë por nuk janë në vendin e duhur.</p>
+          <p>• Shkronjat me ngjyrë të hirtë nuk janë në fjalë. Shkronjat me ngjyrë të verdhë janë në fjalë por nuk janë në vendin e duhur.</p>
         </div>
         <div className="flex justify-center gap-1 mb-4">
           {"dardhë".split("").map((letter, index) => (

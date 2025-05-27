@@ -4,7 +4,7 @@ import React from 'react';
 const Horizontal_Warning_Modal: React.FC = () => {
   return (
     <div 
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+      className="bg-[var(--background)] text-[var(--text0)] fixed inset-0 flex items-center justify-center"
       style={{
         animation: "0.3s ease-out forwards modalFadeIn"
       }}
@@ -16,7 +16,7 @@ const Horizontal_Warning_Modal: React.FC = () => {
         }
       `}</style>
       
-      <div className="bg-[var(--background)] rounded-lg p-6 max-w-md mx-4 shadow-xl">
+      <div className="bg-[var(--background)] rounded-lg p-6 max-w-md mx-4">
         <div className="text-2xl font-bold mb-4 text-[var(--text0)] font-bold">paralajmërim</div>
         
         <div className="space-y-3 text-[var(--text0)]">

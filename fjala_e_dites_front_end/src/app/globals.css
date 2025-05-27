@@ -2,29 +2,35 @@
 
 :root {
   --foreground-light: #171717;
-  --background-light: #ffffff;
-
   --foreground-dark: #404040;
+  
+  --background-light: #ffffff;
   --background-dark: #0a0a0a;
+  
+  --text-light: #ffffff;
+  --text-dark: #000000;
 
   --border-light: #aaaaaa;
   --border-dark: #444444;
 
   --correct: #22c55e; /* to be used with ui elements too */
   --correct-hover: #1eae53;
-  --present: #eab308;
+  --correct-pressed: #178941;
 
-  --text-light: #ffffff;
-  --text-dark: #000000;
+  --present: #eab308;
+  --present-pressed: #a37D05;
 
   --absent-light: #808080;
-  --absent-dark: #333333;
-  
-  --unused-dark: #707070;
-  --unused-light: #cccccc;
+  --absent-light-pressed: #595959;
 
-  --pressed-light: #aaaaaa;
-  --pressed-dark: #aaaaaa;
+  --absent-dark: #404040;
+  --absent-dark-pressed: #2C2C2C;
+
+  --unused-light: #c0c0c0;
+  --unused-dark: #808080;
+
+  --pressed-light: #808080;
+  --pressed-dark: #404040;
 
   /* Default (light mode) */
   --foreground: var(--foreground-light);
@@ -34,7 +40,8 @@
   --text1: var(--text-light);
   --text0: var(--text-dark);
   --border: var(--border-light);
-  --pressed: var(--pressed-light)
+  --pressed: var(--pressed-light);
+  --absent-pressed: var(--absent-light-pressed)  
 }
 
 /* Dark mode overrides */
@@ -46,7 +53,8 @@
   --text1: var(--text-dark);
   --text0: var(--text-light);
   --border: var(--border-dark);
-  --pressed: var(--pressed-dark)
+  --pressed: var(--pressed-dark);
+  --absent-pressed: var(--absent-dark-pressed)
 }
 
 @theme inline {
@@ -61,9 +69,17 @@
   color: var(--text-light);
 }
 
+.tile-correct:active {
+  background-color: var(--correct-pressed);
+}
+
 .tile-present {
   background-color: var(--present);
   color: var(--text-light);
+}
+
+.tile-present:active {
+  background-color: var(--present-pressed);
 }
 
 .tile-absent {
@@ -71,9 +87,18 @@
   color: var(--text-light);
 }
 
+.tile-absent:active {
+  background-color: var(--absent-pressed);
+}
+
+
 .tile-unused {
   background-color: var(--unused);
   color: var(--text0);
+}
+
+.tile-unused:active {
+  background-color: var(--pressed);
 }
 
 body {

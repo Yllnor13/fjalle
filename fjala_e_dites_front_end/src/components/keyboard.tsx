@@ -29,7 +29,7 @@ const Key: React.FC<KeyProps> = ({ value, onClick, state }) => {
 
   return (
     <button
-      className={`w-[9vw] md:w-[3vw] h-[8vh] rounded font-bold text-3xl ${stateClasses[state]} active:bg-[var(--pressed)]`}
+      className={`w-[9vw] md:w-[3vw] h-[8vh] rounded font-bold text-3xl ${stateClasses[state]} cursor-pointer active:tile-[var(--pressed)]`}
       onClick={() => onClick(value)}
     >
       {value}
@@ -51,7 +51,6 @@ const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, keyStates }) => {
     console.log("keyboard loaded")
     const handleKeyDown = (event: KeyboardEvent) => {
       const key = event.key.toUpperCase();
-      console.log("Pressed: " + key);
       
       // Handle letters
       if (/^[A-ZÇË]$/.test(key)) {

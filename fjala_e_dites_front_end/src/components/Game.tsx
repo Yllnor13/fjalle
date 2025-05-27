@@ -21,6 +21,8 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
   const [today_word, set_word] = useState<string>('');
   const [won, set_won] = useState<boolean>(false);
   const [lost, set_lost] = useState<boolean>(false);
+  const [is_Loading, set_loading] = useState<boolean>(false);
+  const [loadingDots, setLoadingDots] = useState(".");
 
   const MAX_ATTEMPTS = 6;
   const WORD_LENGTH = 6;
@@ -67,7 +69,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
         if (won) {
           set_word(attemptArray[attemptArray.length - 1]);
         }
-        console.log("on page load")
+        set_lost(!won);
         setIsGameOver(true)
         handleShowStats();
       }
@@ -116,12 +118,14 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
     
     try {
       // Submit word to backend via parent component
+      set_loading(true);
       const res = await send_Word.send_Data(currentAttempt, get_todays_date());
+      set_loading(false);
       const responseValue = parseInt(res.data);
       const response = decodeData(responseValue);
       // Check if the word is not in the word list (server returns exists: false)
       if (!response.exist) { //(!response.exists && !isHardmode)
-        setError(`"${currentAttempt}" is not in the word list`);
+        setError(`"${currentAttempt}" nuk është në list`);
         return; // Don't process this as an attempt
       }
       
@@ -148,11 +152,11 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
       const isLoss = newAttempts.length >= MAX_ATTEMPTS && !isWin;
       
       if (isWin || isLoss) {
-        handleGameOver(isWin);
+        handleGameOver(isWin, newResults);
       }
     } catch (error) {
       console.error('Error submitting word:', error);
-      setError('Error submitting word. Please try again.');
+      setError('Gabim në dërgimin e fjalës. Ju lutem provoni apët.');
     }
   };
 
@@ -183,7 +187,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
 
   // Handle key press from keyboard component
   const handleKeyPress = (key: string) => {
-    if (isGameOver) return;
+    if (isGameOver || is_Loading) return;
     setError(null);
     
     if (key === 'BACK' || key === '<') {
@@ -234,12 +238,14 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
       Local_storage.save_cur_streak();
       Local_storage.save_win_round(finalResults.length);
       set_word(currentAttempt);
+      set_won(true);
     } else {
       Local_storage.add_loss();
       Local_storage.remove_cur_streak();
+      set_lost(true);
     }
     
-    handleShowStats();
+    handleShowStats(finalResults);
   };
 
   const handleShowStats = (finalResults = results) => {
@@ -255,9 +261,11 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
     try{
       navigator.clipboard.writeText(shareMessage)
       //"U kopijue me suksese"
+      setError('Rezultatet u kopjuan!');
     }
     catch(err){
       console.error(err)
+      setError('Rezultatet nuk u kopjuan!');
     }
   };
 
@@ -271,6 +279,20 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
     return Math.round((wins / total) * 100);
   };
 
+  useEffect(() => {
+    if (!is_Loading) return;
+
+    const interval = setInterval(() => {
+      setLoadingDots(prev => {
+        if (prev === ".") return "..";
+        if (prev === "..") return "...";
+        return ".";
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [is_Loading]);
+
   // Get the appropriate CSS class for a letter cell based on result
   const getCellClass = (rowIndex: number, colIndex: number): string => {
     const baseClasses = 'rounded w-16 h-16 border flex items-center justify-center font-bold text-xl uppercase';
@@ -279,6 +301,9 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
     if (rowIndex === attempts.length) {
       if (colIndex < currentAttempt.length) {
         return `${baseClasses} text-[var(--text0)] border-[var(--cell-border-typing)] bg-[var(--cell-bg-typing)] text-[var(--cell-text-typing)]`;
+      }
+      if (is_Loading){
+        return loadingDots;
       }
       return `${baseClasses} border-[var(--text0)]`;
     }
@@ -306,6 +331,10 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
     }
     
     if (rowIndex === attempts.length && colIndex < currentAttempt.length) {
+      if (is_Loading) {
+        // Show animated dots in every cell of the current row while loading
+        return loadingDots;
+      }
       return currentAttempt[colIndex];
     }
     
@@ -366,9 +395,9 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
       {/* Error message */}
       <div className="relative">
         {error && (
-          <div className="absolute top-[-60px] left-0 right-0 mx-auto w-fit z-10 animate-fadeIn">
+          <div className="absolute top-[-60px] left-1/2 transform -translate-x-1/2 w-fit z-10 animate-fadeIn">
             <div className={`text-center font-bold py-2 px-4 rounded-md shadow-lg border ${
-              error === 'Results copied to clipboard!' 
+              error === 'Rezultatet u kopjuan!' 
                 ? 'text-green-700 bg-green-50 border-green-300' 
                 : 'text-red-700 bg-red-50 border-red-300'
             }`}>
@@ -380,7 +409,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
     {/* Stats Modal */}
     {showStatsModal && (
       <div
-        className="text-[var(--text0)] fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+        className="bg-[var(--background)] text-[var(--text0)] fixed inset-0 flex items-center justify-center"
         style={{
           animation: "0.3s ease-out forwards modalFadeIn"
         }}
@@ -391,7 +420,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
             to { opacity: 1; transform: translateY(0); }
           }
         `}</style>
-        <div className="bg-[var(--background)] p-6 rounded-lg shadow-lg w-80 md:w-96 max-w-full max-h-[90vh] overflow-auto">
+        <div className="p-6 rounded-lg w-80 md:w-96 max-w-full max-h-[90vh] overflow-auto">
           {/* Game result */}
           <div className="mb-4 text-center">
             <p className="text-xl font-bold">
@@ -400,15 +429,15 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
                 : "Suksese ne vazhdim!"}
             </p>
 
-            {today_word && (
+            {won && (
               <p className="mt-2">
                 Fjala e dites ishte: <span className="font-bold uppercase">{today_word}</span>
               </p>
             )}
 
-            {!today_word && (
+            {lost && (
               <p className="mt-2">
-                Nuk i a dole? Pyesni miqtë tuaj nëse e kanë zgjidhur.!
+                Nuk i a dole? Pyesni miqtë tuaj nëse e kanë zgjidhur!
               </p>
             )}
           </div>
@@ -464,7 +493,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
           </div>
           
           {/* Share section */}
-          {isGameOver && (
+          {won && (
             <div className="mb-4">
             <h3 className="text-lg font-bold mb-2 text-center">Shpërndaje</h3>
             <pre className="bg-[var(--background)] p-2 rounded mb-2 text-sm overflow-x-auto">
