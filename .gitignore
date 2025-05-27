@@ -1,5 +1,5 @@
 ecs_server/backend
-ecs_server/tools/
+ecs_server/tools/*
 !ecs_server/tools/correction.py
 !ecs_server/tools/work_to_prod.py
 !ecs_server/tools/correction.py
