@@ -1,5 +1,11 @@
 ecs_server/backend
-ecs_server/tools/albanian-diceware-words-list
+ecs_server/tools/
+!ecs_server/tools/correction.py
+!ecs_server/tools/work_to_prod.py
+!ecs_server/tools/correction.py
+!ecs_server/tools/order_words.py
+!ecs_server/tools/order_words_reversed.py
+!ecs_server/tools/createdatesforcsv.py
 **/__pycache__/
 .vscode/
 
