@@ -1,48 +1,28 @@
 import { API_URL } from "./link";
+import * as backend from "./fake_backend"
 
 interface APIRequestConfig{
     method: 'GET' | 'POST';
-    data?: string;
-    date?: string;
+    data: string;
+    date: string;
 }
 
 async function apiRequest({ method = 'POST', data, date } : APIRequestConfig){
-    const fetchOptions : RequestInit = {
-        method,
-        headers: {
-            'Content-Type' : 'application/json'
-        },
-        mode : 'cors',
-        credentials : 'omit',
-    }
 
-    if (data || date) {
-        fetchOptions.body = JSON.stringify({ data, date });
-    }
+    if (method === 'POST') {
+        data = data.toLowerCase();
+        const result = backend.checkLetters(data, date);
+        const exist = backend.isWordInList(data);
+        const encoded = backend.encodeData(result, exist);
 
-    console.log(fetchOptions)
-    try{
-        const response = await fetch(`${API_URL}`, fetchOptions);
-        console.log(`${API_URL}`);
-        if (!response.ok){
-            throw new Error(`API call failed: ${response.statusText}`);
-        }
-        return response.json();
-    } catch(error){
-        console.error('API Request failed: ', error);
-        throw error;
+        return {data: encoded};
     }
+    throw new Error('Unsupported method');
 }
 
-export const get_Word = {
-    get_Data : () =>
-        apiRequest({
-            method : 'GET',
-        })
-    }
 
 export const send_Word = {
-    send_Data : (str : string, this_date : string) =>
+    send_Data : (str : string, this_date : string): Promise<{ data: number }> =>
         apiRequest({
             method : 'POST',
             data : str,

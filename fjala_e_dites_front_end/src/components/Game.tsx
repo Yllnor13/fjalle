@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Keyboard from './keyboard';
 import Local_storage from './Local_storage';
-import {get_Word, send_Word} from '@/lib/api_client';
+import {send_Word} from '@/lib/api_client';
 import local_storage from './Local_storage';
 
 // Define result states for each letter
@@ -121,7 +121,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
       set_loading(true);
       const res = await send_Word.send_Data(currentAttempt, get_todays_date());
       set_loading(false);
-      const responseValue = parseInt(res.data);
+      const responseValue = res.data;
       const response = decodeData(responseValue);
       // Check if the word is not in the word list (server returns exists: false)
       if (!response.exist) { //(!response.exists && !isHardmode)
