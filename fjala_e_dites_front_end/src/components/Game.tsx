@@ -108,7 +108,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
   const handle_submit = async () => {
     // Validate input length
     if (currentAttempt.length !== WORD_LENGTH) {
-      setError(`Word must be ${WORD_LENGTH} letters long`);
+      setError(`Fjala duhet ti ketë vetëm ${WORD_LENGTH} shkronja`);
       return;
     }
     

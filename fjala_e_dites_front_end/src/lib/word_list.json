@@ -13,11 +13,11 @@
   },
   {
     "date": "2025/5/30",
-    "word": "bukuro"
+    "word": "bukura"
   },
   {
     "date": "2025/5/31",
-    "word": "korint"
+    "word": "vrimat"
   },
   {
     "date": "2025/6/1",
@@ -245,7 +245,7 @@
   },
   {
     "date": "2025/7/27",
-    "word": "vëllez"
+    "word": "neveri"
   },
   {
     "date": "2025/7/28",
@@ -1209,7 +1209,7 @@
   },
   {
     "date": "2026/3/25",
-    "word": "viktim"
+    "word": "pronat"
   },
   {
     "date": "2026/3/26",
@@ -1277,11 +1277,11 @@
   },
   {
     "date": "2026/4/11",
-    "word": "ankth"
+    "word": "ankthi"
   },
   {
     "date": "2026/4/12",
-    "word": "letëra"
+    "word": "letrat"
   },
   {
     "date": "2026/4/13",
@@ -1489,7 +1489,7 @@
   },
   {
     "date": "2026/6/3",
-    "word": "çastin"
+    "word": "mbushi"
   },
   {
     "date": "2026/6/4",
@@ -1533,7 +1533,7 @@
   },
   {
     "date": "2026/6/14",
-    "word": "shihni"
+    "word": "lypsat"
   },
   {
     "date": "2026/6/15",
@@ -1561,7 +1561,7 @@
   },
   {
     "date": "2026/6/21",
-    "word": "cilësi"
+    "word": "sezoni"
   },
   {
     "date": "2026/6/22",
@@ -1573,7 +1573,7 @@
   },
   {
     "date": "2026/6/24",
-    "word": "sezoni"
+    "word": "cilësi"
   },
   {
     "date": "2026/6/25",
@@ -1901,7 +1901,7 @@
   },
   {
     "date": "2026/9/14",
-    "word": "bukura"
+    "word": "gëzime"
   },
   {
     "date": "2026/9/15",
@@ -2377,7 +2377,7 @@
   },
   {
     "date": "2027/1/11",
-    "word": "lulzim"
+    "word": "tretja"
   },
   {
     "date": "2027/1/12",
@@ -3073,7 +3073,7 @@
   },
   {
     "date": "2027/7/4",
-    "word": "largon"
+    "word": "harroi"
   },
   {
     "date": "2027/7/5",
@@ -3209,7 +3209,7 @@
   },
   {
     "date": "2027/8/7",
-    "word": "shumic"
+    "word": "tentim"
   },
   {
     "date": "2027/8/8",
@@ -3429,7 +3429,7 @@
   },
   {
     "date": "2027/10/1",
-    "word": "adresë"
+    "word": "trapez"
   },
   {
     "date": "2027/10/2",
@@ -3449,7 +3449,7 @@
   },
   {
     "date": "2027/10/6",
-    "word": "votove"
+    "word": "shënoj"
   },
   {
     "date": "2027/10/7",
@@ -3617,7 +3617,7 @@
   },
   {
     "date": "2027/11/17",
-    "word": "epshme"
+    "word": "primat"
   },
   {
     "date": "2027/11/18",
@@ -3625,7 +3625,7 @@
   },
   {
     "date": "2027/11/19",
-    "word": "gëzime"
+    "word": "krimet"
   },
   {
     "date": "2027/11/20",
@@ -3634,5 +3634,437 @@
   {
     "date": "2027/11/21",
     "word": "gërhit"
+  },
+  {
+    "date": "2027/11/22",
+    "word": "krisma"
+  },
+  {
+    "date": "2027/11/23",
+    "word": "rritem"
+  },
+  {
+    "date": "2027/11/24",
+    "word": "epshme"
+  },
+  {
+    "date": "2027/11/25",
+    "word": "dasmat"
+  },
+  {
+    "date": "2027/11/26",
+    "word": "trimat"
+  },
+  {
+    "date": "2027/11/27",
+    "word": "xhamia"
+  },
+  {
+    "date": "2027/11/28",
+    "word": "punimi"
+  },
+  {
+    "date": "2027/11/29",
+    "word": "sërish"
+  },
+  {
+    "date": "2027/11/30",
+    "word": "nxanun"
+  },
+  {
+    "date": "2027/12/1",
+    "word": "prekaz"
+  },
+  {
+    "date": "2027/12/2",
+    "word": "harroj"
+  },
+  {
+    "date": "2027/12/3",
+    "word": "ksamil"
+  },
+  {
+    "date": "2027/12/4",
+    "word": "grupet"
+  },
+  {
+    "date": "2027/12/5",
+    "word": "tretet"
+  },
+  {
+    "date": "2027/12/6",
+    "word": "gjilan"
+  },
+  {
+    "date": "2027/12/7",
+    "word": "sendet"
+  },
+  {
+    "date": "2027/12/8",
+    "word": "racist"
+  },
+  {
+    "date": "2027/12/9",
+    "word": "aparat"
+  },
+  {
+    "date": "2027/12/10",
+    "word": "trupat"
+  },
+  {
+    "date": "2027/12/11",
+    "word": "lulzim"
+  },
+  {
+    "date": "2027/12/12",
+    "word": "mjekut"
+  },
+  {
+    "date": "2027/12/13",
+    "word": "gropat"
+  },
+  {
+    "date": "2027/12/14",
+    "word": "karton"
+  },
+  {
+    "date": "2027/12/15",
+    "word": "drenas"
+  },
+  {
+    "date": "2027/12/16",
+    "word": "person"
+  },
+  {
+    "date": "2027/12/17",
+    "word": "thumbi"
+  },
+  {
+    "date": "2027/12/18",
+    "word": "golemi"
+  },
+  {
+    "date": "2027/12/19",
+    "word": "shihni"
+  },
+  {
+    "date": "2027/12/20",
+    "word": "portat"
+  },
+  {
+    "date": "2027/12/21",
+    "word": "pronar"
+  },
+  {
+    "date": "2027/12/22",
+    "word": "viktim"
+  },
+  {
+    "date": "2027/12/23",
+    "word": "përsos"
+  },
+  {
+    "date": "2027/12/24",
+    "word": "tërsia"
+  },
+  {
+    "date": "2027/12/25",
+    "word": "blëtar"
+  },
+  {
+    "date": "2027/12/26",
+    "word": "lypsar"
+  },
+  {
+    "date": "2027/12/27",
+    "word": "kulmat"
+  },
+  {
+    "date": "2027/12/28",
+    "word": "vëllim"
+  },
+  {
+    "date": "2027/12/29",
+    "word": "lutjet"
+  },
+  {
+    "date": "2027/12/30",
+    "word": "prizmi"
+  },
+  {
+    "date": "2027/12/31",
+    "word": "lopatë"
+  },
+  {
+    "date": "2028/1/1",
+    "word": "kushte"
+  },
+  {
+    "date": "2028/1/2",
+    "word": "servil"
+  },
+  {
+    "date": "2028/1/3",
+    "word": "resurs"
+  },
+  {
+    "date": "2028/1/4",
+    "word": "mbreti"
+  },
+  {
+    "date": "2028/1/5",
+    "word": "frenim"
+  },
+  {
+    "date": "2028/1/6",
+    "word": "presim"
+  },
+  {
+    "date": "2028/1/7",
+    "word": "thënja"
+  },
+  {
+    "date": "2028/1/8",
+    "word": "referi"
+  },
+  {
+    "date": "2028/1/9",
+    "word": "servim"
+  },
+  {
+    "date": "2028/1/10",
+    "word": "defrim"
+  },
+  {
+    "date": "2028/1/11",
+    "word": "birsim"
+  },
+  {
+    "date": "2028/1/12",
+    "word": "blersi"
+  },
+  {
+    "date": "2028/1/13",
+    "word": "vendas"
+  },
+  {
+    "date": "2028/1/14",
+    "word": "iritim"
+  },
+  {
+    "date": "2028/1/15",
+    "word": "vendim"
+  },
+  {
+    "date": "2028/1/16",
+    "word": "mbushe"
+  },
+  {
+    "date": "2028/1/17",
+    "word": "çastin"
+  },
+  {
+    "date": "2028/1/18",
+    "word": "themel"
+  },
+  {
+    "date": "2028/1/19",
+    "word": "shkemb"
+  },
+  {
+    "date": "2028/1/20",
+    "word": "blerje"
+  },
+  {
+    "date": "2028/1/21",
+    "word": "tentim"
+  },
+  {
+    "date": "2028/1/22",
+    "word": "mister"
+  },
+  {
+    "date": "2028/1/23",
+    "word": "mullar"
+  },
+  {
+    "date": "2028/1/24",
+    "word": "votove"
+  },
+  {
+    "date": "2028/1/25",
+    "word": "adresë"
+  },
+  {
+    "date": "2028/1/26",
+    "word": "votove"
+  },
+  {
+    "date": "2028/1/27",
+    "word": "ideale"
+  },
+  {
+    "date": "2028/1/28",
+    "word": "shumic"
+  },
+  {
+    "date": "2028/1/29",
+    "word": "shënim"
+  },
+  {
+    "date": "2028/1/30",
+    "word": "unazat"
+  },
+  {
+    "date": "2028/1/31",
+    "word": "rurale"
+  },
+  {
+    "date": "2028/2/1",
+    "word": "vendos"
+  },
+  {
+    "date": "2028/2/2",
+    "word": "belaja"
+  },
+  {
+    "date": "2028/2/3",
+    "word": "rrëfej"
+  },
+  {
+    "date": "2028/2/4",
+    "word": "lajkat"
+  },
+  {
+    "date": "2028/2/5",
+    "word": "tregoj"
+  },
+  {
+    "date": "2028/2/6",
+    "word": "ndaloj"
+  },
+  {
+    "date": "2028/2/7",
+    "word": "pengoj"
+  },
+  {
+    "date": "2028/2/8",
+    "word": "beqarë"
+  },
+  {
+    "date": "2028/2/9",
+    "word": "varësi"
+  },
+  {
+    "date": "2028/2/10",
+    "word": "zbuloj"
+  },
+  {
+    "date": "2028/2/11",
+    "word": "vëllau"
+  },
+  {
+    "date": "2028/2/12",
+    "word": "mbaroj"
+  },
+  {
+    "date": "2028/2/13",
+    "word": "takimi"
+  },
+  {
+    "date": "2028/2/14",
+    "word": "kumbon"
+  },
+  {
+    "date": "2028/2/15",
+    "word": "veprim"
+  },
+  {
+    "date": "2028/2/16",
+    "word": "caktim"
+  },
+  {
+    "date": "2028/2/17",
+    "word": "fitova"
+  },
+  {
+    "date": "2028/2/18",
+    "word": "veproj"
+  },
+  {
+    "date": "2028/2/19",
+    "word": "mërgim"
+  },
+  {
+    "date": "2028/2/20",
+    "word": "besart"
+  },
+  {
+    "date": "2028/2/21",
+    "word": "humbje"
+  },
+  {
+    "date": "2028/2/22",
+    "word": "trukim"
+  },
+  {
+    "date": "2028/2/23",
+    "word": "kishte"
+  },
+  {
+    "date": "2028/2/24",
+    "word": "turqit"
+  },
+  {
+    "date": "2028/2/25",
+    "word": "dërgoj"
+  },
+  {
+    "date": "2028/2/26",
+    "word": "fërkoj"
+  },
+  {
+    "date": "2028/2/27",
+    "word": "terezi"
+  },
+  {
+    "date": "2028/2/28",
+    "word": "kërkoj"
+  },
+  {
+    "date": "2028/2/29",
+    "word": "kërrsh"
+  },
+  {
+    "date": "2028/3/1",
+    "word": "afërsi"
+  },
+  {
+    "date": "2028/3/2",
+    "word": "ëndrra"
+  },
+  {
+    "date": "2028/3/3",
+    "word": "anglez"
+  },
+  {
+    "date": "2028/3/4",
+    "word": "udhëve"
+  },
+  {
+    "date": "2028/3/5",
+    "word": "kanuni"
+  },
+  {
+    "date": "2028/3/6",
+    "word": "kundër"
+  },
+  {
+    "date": "2028/3/7",
+    "word": "urërat"
+  },
+  {
+    "date": "2028/3/8",
+    "word": "urdhër"
   }
 ]
