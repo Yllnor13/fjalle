@@ -17,10 +17,10 @@ const Horizontal_Warning_Modal: React.FC = () => {
       `}</style>
       
       <div className="bg-[var(--background)] rounded-lg p-6 max-w-md mx-4">
-        <div className="text-2xl font-bold mb-4 text-[var(--text0)] font-bold">paralajmërim</div>
+        <div className="text-2xl font-bold mb-4 text-[var(--text0)] font-bold">ADVARSEL</div>
         
         <div className="space-y-3 text-[var(--text0)]">
-          <p>Ju lutem ktheje telefonin vertikalisht</p>
+          <p>Plis hold telefonen din vertikalt</p>
         </div>
         
       </div>

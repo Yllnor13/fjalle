@@ -41,9 +41,9 @@ const Key: React.FC<KeyProps> = ({ value, onClick, state }) => {
 const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, keyStates }) => {
   // Keyboard layout rows
   const keyboardRows = [
-    ['Q', 'W', 'E', 'R', 'T', 'Z', 'U', 'I', 'O', 'P', 'Ç'],
-    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ë'],
-    ['>', 'Y', 'X', 'C', 'V', 'B', 'N', 'M', '<']
+    ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'Å'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ø', 'Æ'],
+    ['>', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<']
   ];
 
   // Handle physical keyboard presses

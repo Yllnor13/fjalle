@@ -25,7 +25,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
   const [loadingDots, setLoadingDots] = useState(".");
 
   const MAX_ATTEMPTS = 6;
-  const WORD_LENGTH = 6;
+  const WORD_LENGTH = 5;
 
   // Load saved game state on component mount
   useEffect(() => {
@@ -108,7 +108,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
   const handle_submit = async () => {
     // Validate input length
     if (currentAttempt.length !== WORD_LENGTH) {
-      setError(`Fjala duhet ti ketë vetëm ${WORD_LENGTH} shkronja`);
+      setError(`Ordet må være akkurat ${WORD_LENGTH} bokstaver langt!`);
       return;
     }
     
@@ -125,7 +125,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
       const response = decodeData(responseValue);
       // Check if the word is not in the word list (server returns exists: false)
       if (!response.exist) { //(!response.exists && !isHardmode)
-        setError(`"${currentAttempt}" nuk është në list`);
+        setError(`"${currentAttempt}" er ikke i lista.`);
         return; // Don't process this as an attempt
       }
       
@@ -156,7 +156,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
       }
     } catch (error) {
       console.error('Error submitting word:', error);
-      setError('Gabim në dërgimin e fjalës. Ju lutem provoni apët.');
+      setError('Det oppsto et problem med forsøket. Plis prøv igjen nå.');
     }
   };
 
@@ -206,7 +206,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
 
   // Generate share text with emojis based on results
   const generateShareText = (resultsArray = results): string => {
-    let shareText = `Fjala e dites ${today_date_ui} ${resultsArray.length}/${MAX_ATTEMPTS}\n\n`;
+    let shareText = `Fjala e dites ${today_date_ui} ${resultsArray.length}/${MAX_ATTEMPTS}\n\n`; //TODO: fikse dette med det nye navnet
     
     // Create emoji grid based on results
     resultsArray.forEach(row => {
@@ -261,11 +261,11 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
     try{
       navigator.clipboard.writeText(shareMessage)
       //"U kopijue me suksese"
-      setError('Rezultatet u kopjuan!');
+      setError('Kopierte resultatene!');
     }
     catch(err){
       console.error(err)
-      setError('Rezultatet nuk u kopjuan!');
+      setError('Det oppsto et problem under kopieringen!');
     }
   };
 
@@ -364,7 +364,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
           {Array.from({ length: MAX_ATTEMPTS }).map((_, rowIndex) => (
             <div
               key={`row-${rowIndex}`}
-              className="grid grid-cols-6 gap-[0.3vw]"
+              className={`grid grid-cols-${WORD_LENGTH} gap-[0.3vw]`}
             >
               {Array.from({ length: WORD_LENGTH }).map((_, colIndex) => {
                 const delay = `${colIndex * 0.2}s`;
@@ -397,7 +397,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
         {error && (
           <div className="absolute top-[-60px] left-1/2 transform -translate-x-1/2 w-fit z-10 animate-fadeIn">
             <div className={`text-center font-bold py-2 px-4 rounded-md shadow-lg border ${
-              error === 'Rezultatet u kopjuan!' 
+              error === 'Resultatet ble kopiert!!' 
                 ? 'text-green-700 bg-green-50 border-green-300' 
                 : 'text-red-700 bg-red-50 border-red-300'
             }`}>
@@ -425,19 +425,19 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
           <div className="mb-4 text-center">
             <p className="text-xl font-bold">
               {results.some(result => result.every(r => r === 2))
-                ? "Ju keni fituar!"
-                : "Suksese ne vazhdim!"}
+                ? "Gratulerer, du vant!"
+                : "Rekken fortsetter!"}
             </p>
 
             {won && (
               <p className="mt-2">
-                Fjala e dites ishte: <span className="font-bold uppercase">{today_word}</span>
+                dagens ord er: <span className="font-bold uppercase">{today_word}</span>
               </p>
             )}
 
             {lost && (
               <p className="mt-2">
-                Nuk i a dole? Pyesni miqtë tuaj nëse e kanë zgjidhur!
+                Fikk du det ikke til? Spør vennene dine og se hva de svarte!
               </p>
             )}
           </div>
@@ -446,25 +446,25 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div className="text-center">
               <div className="text-3xl font-bold">{Local_storage.get_wins() + Local_storage.get_losses()}</div>
-              <div className="text-sm">Lojë</div>
+              <div className="text-sm">Spill</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold">{calculateWinPercentage()}%</div>
-              <div className="text-sm">Fituar %</div>
+              <div className="text-sm">Vinner %</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold">{Local_storage.get_cur_streak()}</div>
-              <div className="text-sm">Brezi aktual</div>
+              <div className="text-sm">Nåverende rekke</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold">{Local_storage.get_max_streak()}</div>
-              <div className="text-sm">Brezi maksimum</div>
+              <div className="text-sm">lengste rekke</div>
             </div>
           </div>
           
           {/* Guess Distribution */}
           <div className="mb-6">
-            <h3 className="font-bold mb-2 text-center">Shpërndarja e përgjigjeve</h3>
+            <h3 className="font-bold mb-2 text-center">Når du vant</h3>
             <div className="space-y-1">
               {Array.from({ length: MAX_ATTEMPTS }).map((_, i) => {
                 const count = Local_storage.get_win_rounds(i + 1);
@@ -495,7 +495,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
           {/* Share section */}
           {won && (
             <div className="mb-4">
-            <h3 className="text-lg font-bold mb-2 text-center">Shpërndaje</h3>
+            <h3 className="text-lg font-bold mb-2 text-center">Del</h3>
             <pre className="bg-[var(--background)] p-2 rounded mb-2 text-sm overflow-x-auto">
               {shareMessage}
             </pre>
@@ -503,7 +503,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
               onClick={copyToClipboard}
               className="w-full py-2 bg-[var(--correct)] text-[var(--text-light)] font-bold rounded hover:bg-[var(--correct-hover)] transition"
             >
-              Kopjo rezultatet
+              Kopier resultatene
             </button>
           </div>
           )}
@@ -512,7 +512,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
             onClick={() => setShowStatsModal(false)}
             className="w-full py-2 text-[var(--text-0)] font-bold rounded"
           >
-            Mbylle
+            Lukk
           </button>
         </div>
       </div>

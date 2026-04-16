@@ -31,10 +31,9 @@ interface InstructionModalProps {
 type KeyState = 0 | 1 | 2;
 
 const newKeyStates: Record<string, KeyState[]> = {
-  "fjalët": [2, 2, 2, 2, 2, 2],
-  "mollët": [0, 0, 1, 2, 2, 2],
-  "bunker": [0, 0, 0, 0, 0, 0],
-  "dardhë": [0, 1, 0, 0, 0, 1],
+  "ordet": [2, 2, 2, 2, 2],
+  "moste": [0, 1, 0, 0, 1],
+  "orgel": [2, 2, 0, 2, 0],
 };
 
 const baseTextClass = "space-y-3 text-[var(--text0)]";
@@ -74,21 +73,21 @@ const Instruction_Modal: React.FC<InstructionModalProps> = ({ onClose }) => {
       `}</style>
       
       <div className="bg-[var(--background)] rounded-lg p-6 max-w-md mx-4 shadow-xl">
-        <div className="text-2xl font-bold mb-4 text-[var(--text0)] font-bold">Këshilla për lojën</div>
+        <div className="text-2xl font-bold mb-4 text-[var(--text0)] font-bold">Instruksjoner for spillet.</div>
         
         <div className={baseTextClass}>
-          <p>• Shkruaje një fjalë më gjashtë shkronja dhe kliko "&gt;".</p>
+          <p>• Skriv inn ett ord med 5 bokstaver og klikk "&gt;".</p>
         </div>
         <div className={baseTextClass}>
-          <p>• Shkronjat me ngjyrë të hirtë nuk janë në fjalë. Shkronjat me ngjyrë të verdhë janë në fjalë por nuk janë në vendin e duhur.</p>
+          <p>• Bokstavene med grå farge er ikke i dagens ord. Bokstavene med gul farge er i ordet med på feil plass.</p>
         </div>
         <div className="flex justify-center gap-1 mb-4">
-          {"dardhë".split("").map((letter, index) => (
+          {"moste".split("").map((letter, index) => (
             <div
               key={index}
               className={`
                 ${baseLetterClass}
-                ${getColorClass(newKeyStates["dardhë"][index])}
+                ${getColorClass(newKeyStates["moste"][index])}
               `}
             >
               {letter}
@@ -96,15 +95,15 @@ const Instruction_Modal: React.FC<InstructionModalProps> = ({ onClose }) => {
           ))}
         </div>
         <div className={baseTextClass}>
-          <p>• Shkronjat me ngjyrë të gjelbër, janë në vendin e duhur.</p>
+          <p>• Bokstavene med grønn farge er i ordet og på riktig plass.</p>
         </div>
         <div className="flex justify-center gap-1 mb-4">
-          {"mollët".split("").map((letter, index) => (
+          {"orgel".split("").map((letter, index) => (
             <div
               key={index}
               className={`
                 ${baseLetterClass}
-                ${getColorClass(newKeyStates["mollët"][index])}
+                ${getColorClass(newKeyStates["orgel"][index])}
               `}
             >
               {letter}
@@ -112,15 +111,15 @@ const Instruction_Modal: React.FC<InstructionModalProps> = ({ onClose }) => {
           ))}
         </div>
         <div className={baseTextClass}>
-          <p>• E ke gjetur fjalën e dites kur të gjitha kutitë janë gjelbërtë.</p>
+          <p>• Du har funnet dagens ord når alle bokstavene er grønne.</p>
         </div>
         <div className="flex justify-center gap-1 mb-4">
-          {"fjalët".split("").map((letter, index) => (
+          {"ordet".split("").map((letter, index) => (
             <div
               key={index}
               className={`
                 ${baseLetterClass}
-                ${getColorClass(newKeyStates["fjalët"][index])}
+                ${getColorClass(newKeyStates["ordet"][index])}
               `}
             >
               {letter}
@@ -128,10 +127,10 @@ const Instruction_Modal: React.FC<InstructionModalProps> = ({ onClose }) => {
           ))}
         </div>
         <div className={baseTextClass}>
-          <p>• Mundeni ti shlyeni shkronjat me "&lt;".</p>
+          <p>• Du kan slette bokstavene på den nåverende forsøket med "&lt;".</p>
         </div>
         <div className={baseTextClass}>
-          <p>Ju uroj fat!</p>
+          <p>Lykke til!</p>
         </div>
         
         <div className="mt-6 flex justify-end">

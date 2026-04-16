@@ -120,7 +120,7 @@ const MainLayout: React.FC = () => {
           onClick={() => setShowCreditsModal(true)}
           className="px-1 py-1 flex items-center text-5xl font-medium text-[var(--text0)] hover:bg-[var(--unused)] rounded"
         >
-          <h1 className="text-xl font-bold text-center text-[var(--text0)]">FJALA E DITES</h1>
+          <h1 className="text-xl font-bold text-center text-[var(--text0)]">DAGENS ORD</h1>
         </button>
         {/* Right aligned buttons */}
         <div className="flex items-center space-x-6">
