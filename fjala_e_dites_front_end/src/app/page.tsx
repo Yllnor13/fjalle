@@ -12,6 +12,6 @@ export default function Home() {
 }
 
 export const metadata = {
-  title: "Dagens ord",
+  title: "Ordet i dag",
   description: "Spill hver dag!",
 }
