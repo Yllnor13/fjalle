@@ -1,5 +1,18 @@
 {
   "projects": {
     "default": "fjala-e-dites"
-  }
+  },
+  "targets": {
+    "fjala-e-dites": {
+      "hosting": {
+        "original": [
+          "fjala-e-dites"
+        ],
+        "nor": [
+          "ordet-i-dag"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
