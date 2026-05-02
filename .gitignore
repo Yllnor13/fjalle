@@ -12,3 +12,6 @@ ecs_server/tools/*
 
 fjala_e_dites_front_end/node_modules
 fjala_e_dites_front_end/src/lib/link.tsx
+fjala_e_dites_front_end/out/
+fjala_e_dites_front_end/out-ordetidag/
+fjala_e_dites_front_end/out-fjalaedites/

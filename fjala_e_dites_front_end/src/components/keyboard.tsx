@@ -43,7 +43,7 @@ const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, keyStates }) => {
   const keyboardRows = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'Å'],
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ø', 'Æ'],
-    ['>', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<']
+    ['⏎', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '←']
   ];
 
   // Handle physical keyboard presses
@@ -53,7 +53,7 @@ const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, keyStates }) => {
       const key = event.key.toUpperCase();
       
       // Handle letters
-      if (/^[A-ZÇË]$/.test(key)) {
+      if (/^[A-ZÆØÅ]$/.test(key)) {
         console.log("Pressed: " + key);
         onKeyPress(key);
       } 
@@ -84,7 +84,7 @@ const Keyboard: React.FC<KeyboardProps> = ({ onKeyPress, keyStates }) => {
               key={key}
               value={key}
               onClick={onKeyPress}
-              state={keyStates[key] || 'unused'}
+              state={key === '⏎' ? 'correct' : key === '←' ? 'present' : keyStates[key] || 'unused'}
             />
           ))}
         </div>

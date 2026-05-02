@@ -14,7 +14,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
   const [attempts, setAttempts] = useState<string[]>([]);
   const [results, setResults] = useState<LetterResult[][]>([]);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
-  const [keyStates, setKeyStates] = useState<Record<string, KeyState>>({});
+  const [keyStates, setKeyStates] = useState<Record<string, KeyState>>({'⏎' : 'correct', '←' : 'present'});
   const [error, setError] = useState<string | null>(null);
   const [shareMessage, setShareMessage] = useState<string>('');
   const [today_date_ui, set_date] = useState<string>('');
@@ -86,7 +86,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
     const exist = Boolean(val & 1); // flag to know if the word was in the list
     val = val >> 1;
     let data = '';
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 5; i++) {
       data = (val % 3).toString() + data;
       val = Math.floor(val / 3);
     }
@@ -190,13 +190,13 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
     if (isGameOver || is_Loading) return;
     setError(null);
     
-    if (key === 'BACK' || key === '<') {
+    if (key === 'BACK' || key === '←') {
       // Handle backspace
       setCurrentAttempt(prev => prev.slice(0, -1));
-    } else if (key === 'ENTER' || key === '>') {
+    } else if (key === 'ENTER' || key === '⏎') {
       // Submit current attempt
       handle_submit();
-    } else if (/^[A-ZÇË]$/.test(key)) {
+    } else if (/^[A-ZÆØÅ]$/.test(key)) {
       // Add letter if within word length
       if (currentAttempt.length < WORD_LENGTH) {
         setCurrentAttempt(prev => prev + key);
@@ -206,7 +206,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
 
   // Generate share text with emojis based on results
   const generateShareText = (resultsArray = results): string => {
-    let shareText = `Fjala e dites ${today_date_ui} ${resultsArray.length}/${MAX_ATTEMPTS}\n\n`; //TODO: fikse dette med det nye navnet
+    let shareText = `Dagens ord ${today_date_ui} ${resultsArray.length}/${MAX_ATTEMPTS}\n\n`; //TODO: fikse dette med det nye navnet
     
     // Create emoji grid based on results
     resultsArray.forEach(row => {
@@ -364,7 +364,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
           {Array.from({ length: MAX_ATTEMPTS }).map((_, rowIndex) => (
             <div
               key={`row-${rowIndex}`}
-              className={`grid grid-cols-${WORD_LENGTH} gap-[0.3vw]`}
+              className={`grid grid-cols-5 gap-[0.3vw]`}
             >
               {Array.from({ length: WORD_LENGTH }).map((_, colIndex) => {
                 const delay = `${colIndex * 0.2}s`;
@@ -426,7 +426,7 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
             <p className="text-xl font-bold">
               {results.some(result => result.every(r => r === 2))
                 ? "Gratulerer, du vant!"
-                : "Rekken fortsetter!"}
+                : "Statistikk"}
             </p>
 
             {won && (
@@ -454,11 +454,11 @@ const Game: React.FC<{showStatsModal: boolean; setShowStatsModal: (val: boolean)
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold">{Local_storage.get_cur_streak()}</div>
-              <div className="text-sm">Nåverende rekke</div>
+              <div className="text-sm">Nåverende streak</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold">{Local_storage.get_max_streak()}</div>
-              <div className="text-sm">lengste rekke</div>
+              <div className="text-sm">lengste streak</div>
             </div>
           </div>
           

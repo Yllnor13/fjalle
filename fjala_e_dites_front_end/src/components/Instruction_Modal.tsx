@@ -127,7 +127,7 @@ const Instruction_Modal: React.FC<InstructionModalProps> = ({ onClose }) => {
           ))}
         </div>
         <div className={baseTextClass}>
-          <p>• Du kan slette bokstavene på den nåverende forsøket med "&lt;".</p>
+          <p>• Du kan slette bokstavene på det nåverende forsøket med "&lt;".</p>
         </div>
         <div className={baseTextClass}>
           <p>Lykke til!</p>

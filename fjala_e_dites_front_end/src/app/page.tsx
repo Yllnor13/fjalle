@@ -12,6 +12,6 @@ export default function Home() {
 }
 
 export const metadata = {
-  title: "Fjala e Dites",
-  description: "luaj çdo ditë!",
+  title: "Dagens ord",
+  description: "Spill hver dag!",
 }

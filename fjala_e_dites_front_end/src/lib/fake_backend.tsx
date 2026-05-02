@@ -1,6 +1,6 @@
 type WordEntry = {
   date: string;  // e.g. "2027/9/8"
-  word: string;  // always 6 letters
+  word: string;  // always 5 letters
 };
 
 import wordData from './word_list.json';
@@ -11,14 +11,14 @@ export function getDaysWord(dayStr: string): string | null {
 }
 
 export function checkLetters(data: string, dayStr: string): string {
-  if (data.length !== 6) return "";
+  if (data.length !== 5) return "";
 
   const wordOfDay = getDaysWord(dayStr);
   if (!wordOfDay) return "";
 
   const vals: number[] = [];
 
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 5; i++) {
     if (data[i] === wordOfDay[i]) {
       vals.push(2);
     } else if (wordOfDay.includes(data[i])) {
@@ -32,9 +32,9 @@ export function checkLetters(data: string, dayStr: string): string {
 
 export function encodeData(data: string, exist: boolean): number {
   let val = 0;
-  if (data.length !== 6) return 0; // or throw error
+  if (data.length !== 5) return 0; // or throw error
 
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 5; i++) {
     const digit = parseInt(data[i], 10);
     if (isNaN(digit) || digit < 0 || digit > 2) {
       throw new Error("Invalid digit in data string, must be 0, 1, or 2");

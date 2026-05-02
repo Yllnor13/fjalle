@@ -14,7 +14,8 @@ const MainLayout: React.FC = () => {
   const [showHorizontalWarning, setShowHorizontalWarning] = useState(false);
   const [ShowCreditsModal, setShowCreditsModal] = useState(false)
   const [stats_icon, get_stats_icon] = useState('/icons/light/stats_icon_l.svg');
-  const [kosovalb_icon, get_kosovalb_icon] = useState('/icons/light/kosovalb_icon_l.svg');
+  const [JRU_icon, get_JRU_icon] = useState('/icons/light/jru_icon_l.svg');
+  const [JRU_clown_icon, get_JRU_clown_icon] = useState ('/icons/light/jru_clown_icon_l.svg')
   const [theme_icon, get_theme_icon] = useState('/icons/light/theme_icon_l.svg');
   const [instruction_icon, get_instruction_icon] = useState('/icons/light/instruction_icon_l.svg');
 
@@ -74,10 +75,17 @@ const MainLayout: React.FC = () => {
     document.documentElement.classList.toggle('dark', isDark);
   
     get_stats_icon(isDark ? '/icons/dark/stats_icon_d.svg' : '/icons/light/stats_icon_l.svg');
-    get_kosovalb_icon(isDark ? '/icons/dark/kosovalb_icon_d.svg' : '/icons/light/kosovalb_icon_l.svg');
+    get_JRU_icon(isDark ? '/icons/dark/jru_icon_d.svg' : '/icons/light/jru_icon_l.svg');
+    get_JRU_clown_icon(isDark ? '/icons/dark/jru_clown_icon_d.svg' : '/icons/light/jru_clown_icon_l.svg');
     get_theme_icon(isDark ? '/icons/dark/theme_icon_d.svg' : '/icons/light/theme_icon_l.svg');
     get_instruction_icon(isDark ? '/icons/dark/instruction_icon_d.svg' : '/icons/light/instruction_icon_l.svg');
   };
+
+  const easterEgg = () => {
+    const audio = new Audio('/sounds/button_click.mp3');
+    audio.play();
+    get_JRU_icon(JRU_clown_icon);
+  }
 
   useEffect(() => {
     local_storage.apply_theme(); // apply theme class to <html>
@@ -95,15 +103,13 @@ const MainLayout: React.FC = () => {
       <div className="w-full bg-[var(--background)] px-[2vw] flex justify-between items-center border-b-2 border-[var(--absent)]">
         {/* Left empty space for balance */}
         <div className="flex items-center space-x-6">
-          {/* kosovalb button*/}
-          <a
-            href="https://www.facebook.com/share/1BiJWjmViJ/"
-            target="_blank"
-            rel="noopener noreferrer"
+          {/* face button*/}
+          <button
+            onClick={() => setShowCreditsModal(true)}
             className="px-1 py-1 flex items-center text-sm font-medium text-[var(--text0)] hover:bg-[var(--unused)] rounded"
           >
-            <img src={kosovalb_icon} alt="kosovalb" width="35" height="35" />
-          </a>
+            <img src={JRU_icon} alt="Credits" width="35" height="35" />
+          </button>
           {/* theme button */}
           <button
             onClick={() => {
@@ -117,10 +123,10 @@ const MainLayout: React.FC = () => {
         </div>
         {/* Center title */}
         <button
-          onClick={() => setShowCreditsModal(true)}
+          onClick={easterEgg}
           className="px-1 py-1 flex items-center text-5xl font-medium text-[var(--text0)] hover:bg-[var(--unused)] rounded"
         >
-          <h1 className="text-xl font-bold text-center text-[var(--text0)]">DAGENS ORD</h1>
+          <h1 className="text-xl font-bold text-center text-[var(--text0)]">ORDET I DAG</h1>
         </button>
         {/* Right aligned buttons */}
         <div className="flex items-center space-x-6">
@@ -129,7 +135,7 @@ const MainLayout: React.FC = () => {
             onClick={() => setShowInstructionModal(true)}
             className="px-1 py-1 flex items-center text-5xl font-medium text-[var(--text0)] hover:bg-[var(--unused)] rounded"
           >
-            <img src={instruction_icon} alt="light or dark mode" width="35" height="35" />
+            <img src={instruction_icon} alt="instructions" width="35" height="35" />
           </button>
           {/*Stats Button*/}
           <button
