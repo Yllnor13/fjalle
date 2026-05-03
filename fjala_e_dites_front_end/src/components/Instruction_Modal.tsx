@@ -76,7 +76,7 @@ const Instruction_Modal: React.FC<InstructionModalProps> = ({ onClose }) => {
         <div className="text-2xl font-bold mb-4 text-[var(--text0)] font-bold">Instruksjoner for spillet.</div>
         
         <div className={baseTextClass}>
-          <p>• Skriv inn ett ord med 5 bokstaver og klikk "&gt;".</p>
+          <p>• Skriv inn ett ord med 5 bokstaver og klikk "⏎".</p>
         </div>
         <div className={baseTextClass}>
           <p>• Bokstavene med grå farge er ikke i dagens ord. Bokstavene med gul farge er i ordet med på feil plass.</p>
@@ -127,7 +127,7 @@ const Instruction_Modal: React.FC<InstructionModalProps> = ({ onClose }) => {
           ))}
         </div>
         <div className={baseTextClass}>
-          <p>• Du kan slette bokstavene på det nåverende forsøket med "&lt;".</p>
+          <p>• Du kan slette bokstavene på det nåverende forsøket med "←".</p>
         </div>
         <div className={baseTextClass}>
           <p>Lykke til!</p>
