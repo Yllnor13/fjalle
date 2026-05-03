@@ -77,7 +77,7 @@ const Instruction_Modal: React.FC<InstructionModalProps> = ({ onClose }) => {
         <div className="text-2xl font-bold mb-4 text-[var(--text0)] font-bold">Këshilla për lojën</div>
         
         <div className={baseTextClass}>
-          <p>• Shkruaje një fjalë më gjashtë shkronja dhe kliko "&gt;".</p>
+          <p>• Shkruaje një fjalë më gjashtë shkronja dhe kliko "⏎".</p>
         </div>
         <div className={baseTextClass}>
           <p>• Shkronjat me ngjyrë të hirtë nuk janë në fjalë. Shkronjat me ngjyrë të verdhë janë në fjalë por nuk janë në vendin e duhur.</p>
@@ -128,7 +128,7 @@ const Instruction_Modal: React.FC<InstructionModalProps> = ({ onClose }) => {
           ))}
         </div>
         <div className={baseTextClass}>
-          <p>• Mundeni ti shlyeni shkronjat me "&lt;".</p>
+          <p>• Mundeni ti shlyeni shkronjat me "←".</p>
         </div>
         <div className={baseTextClass}>
           <p>Ju uroj fat!</p>

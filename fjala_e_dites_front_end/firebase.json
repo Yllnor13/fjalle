@@ -2,7 +2,7 @@
   "hosting": [
     {
       "target": "original",
-      "public": "out-fjalaedites",
+      "public": "out",
       "ignore": [
         "firebase.json",
         "**/.*",
@@ -17,7 +17,7 @@
     },
     {
       "target": "nor",
-      "public": "out-ordetidag",
+      "public": "out",
       "ignore": [
         "firebase.json",
         "**/.*",
